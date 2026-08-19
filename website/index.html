@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data-Frames | Enterprise-Level Security, SMB-Friendly Pricing</title>
+<meta name="description" content="Data-Frames brings continuous threat detection, real offensive testing, and automated response to small businesses — enterprise-level security at SMB-friendly pricing.">
+<meta property="og:title" content="Data-Frames | Enterprise-Level Security, SMB-Friendly Pricing">
+<meta property="og:description" content="Continuous threat detection, real offensive testing, and automated response for small businesses that need genuine protection without an enterprise budget.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316211c'/%3E%3Cg fill='none' stroke='%230f6b5c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 13V9a3 3 0 0 1 3-3h4'/%3E%3Cpath d='M26 13V9a3 3 0 0 0-3-3h-4'/%3E%3Cpath d='M6 19v4a3 3 0 0 0 3 3h4'/%3E%3Cpath d='M26 19v4a3 3 0 0 1-3 3h-4'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root {
     --bg: #f7f5f1;
@@ -13,7 +18,7 @@
     --ink: #16211c;
     --text: #2b352f;
     --text-dim: #5f6b63;
-    --text-faint: #96a099;
+    --text-faint: #647166;
     --accent: #0f6b5c;
     --accent-dim: #0a4c41;
     --accent-tint: #e6f0ed;
@@ -63,7 +68,7 @@
     color: var(--ink);
     letter-spacing: -0.01em;
   }
-  .logo span { color: var(--accent); }
+  .logo span { color: var(--accent); margin: 0 -10px; }
   .nav-links { display: flex; gap: 32px; font-size: 0.92rem; }
   .nav-links a { color: var(--text-dim); font-weight: 500; transition: color 0.15s; }
   .nav-links a:hover { color: var(--accent); }
@@ -197,31 +202,67 @@
 
   /* Services grid */
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 30px; }
-  .card-icon {
-    width: 42px; height: 42px; border-radius: 8px;
-    background: var(--accent-tint); color: var(--accent-dim);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 18px;
-  }
-  .card-icon svg { width: 21px; height: 21px; }
+  .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 30px; display: flex; flex-direction: column; }
+  .card-icon { width: 46px; height: 46px; color: var(--accent-dim); margin-bottom: 18px; }
+  .card-icon svg { width: 100%; height: 100%; }
+  .brand-mark { width: 20px; height: 20px; color: var(--accent); flex-shrink: 0; }
   .card h3 { font-size: 1.08rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
   .card p { color: var(--text-dim); font-size: 0.93rem; }
+  .card-tool {
+    display: flex; align-items: center; gap: 7px;
+    margin-top: auto; padding-top: 16px; font-size: 0.8rem; font-weight: 600; color: var(--text-dim);
+  }
+  .card-tool .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .card-tool strong { color: var(--ink); font-weight: 700; }
+
+  /* Tool stack */
+  .tool-list { display: flex; flex-direction: column; margin-bottom: 40px; }
+  .tool-row {
+    display: flex; align-items: center; gap: 28px;
+    padding: 24px 0; border-bottom: 1px solid var(--border);
+  }
+  .tool-row:first-child { border-top: 1px solid var(--border); }
+  .tool-logo-chip {
+    background: #000000; border-radius: 6px; padding: 10px 18px;
+    display: flex; align-items: center; justify-content: center;
+    height: 130px; width: 180px; flex-shrink: 0;
+  }
+  .tool-logo { height: 56px; max-width: 165px; object-fit: contain; display: block; }
+  .tool-logo-badge { height: 112px; width: auto; max-width: 165px; object-fit: contain; display: block; }
+  .tool-text h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .tool-text p { color: var(--text-dim); font-size: 0.93rem; max-width: 62ch; }
+  .framework-intro { margin: 48px 0 20px; font-weight: 600; color: var(--ink); font-size: 0.95rem; }
+  .framework-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .framework-badge {
+    border: 1px dashed var(--border); border-radius: 8px; padding: 20px 22px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .fw-name { font-family: Georgia, serif; font-weight: 700; color: var(--ink); font-size: 1.05rem; text-decoration: underline; text-underline-offset: 3px; }
+  .fw-desc { color: var(--text-dim); font-size: 0.86rem; }
+  @media (max-width: 700px) {
+    .tool-row { flex-wrap: wrap; }
+    .framework-row { grid-template-columns: 1fr; }
+  }
 
   /* Process */
   .process { display: flex; flex-direction: column; }
   .process-step {
-    display: grid; grid-template-columns: 60px 1fr; gap: 24px;
+    display: flex; align-items: center; gap: 28px; max-width: 800px;
     padding: 26px 0; border-bottom: 1px solid var(--border);
   }
   .process-step:last-child { border-bottom: none; }
-  .process-num {
-    font-family: Georgia, serif; color: var(--accent); font-size: 1.05rem; font-weight: 700;
-    border: 1px solid var(--accent); border-radius: 50%;
-    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  .process-text { flex: 1 1 auto; min-width: 0; }
+  .process-img {
+    width: 180px; height: 130px; border-radius: 6px; overflow: hidden; order: -1;
+    border: 1px solid var(--border); flex-shrink: 0;
   }
+  .process-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .process-step h3 { font-size: 1.08rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
-  .process-step p { color: var(--text-dim); font-size: 0.94rem; max-width: 62ch; }
+  .process-step p { color: var(--text-dim); font-size: 0.94rem; }
+  @media (max-width: 700px) {
+    .process-step { flex-wrap: wrap; }
+    .process-img { display: none; }
+  }
 
   /* About */
   .about-wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: start; }
@@ -321,9 +362,18 @@
 
 <header>
   <nav>
-    <div class="logo">Data<span>-</span>Frames</div>
+    <div class="logo" style="display:flex; align-items:center; gap:10px;">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12V7a3 3 0 0 1 3-3h5"/>
+        <path d="M28 12V7a3 3 0 0 0-3-3h-5"/>
+        <path d="M4 20v5a3 3 0 0 0 3 3h5"/>
+        <path d="M28 20v5a3 3 0 0 1-3 3h-5"/>
+      </svg>
+      Data<span>-</span>Frames
+    </div>
     <div class="nav-links">
       <a href="#services">Services</a>
+      <a href="#stack">Our Toolset</a>
       <a href="#process">Process</a>
       <a href="#about">About</a>
       <a href="#faq">FAQ</a>
@@ -364,34 +414,99 @@
     </div>
     <div class="grid">
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg></div>
+        <div class="card-icon" style="color:#0d9488;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <path d="M9 17h3.5l1.8-5 2.6 9 1.8-4H23" stroke-width="1.6"/>
+        </svg></div>
         <h3>Threat Detection &amp; SIEM</h3>
-        <p>Continuous log correlation and alerting across your environment. File integrity monitoring, vulnerability detection, and real-time alerting mean issues are caught in minutes, not discovered months later during an audit.</p>
+        <p>Continuous log correlation and alerting across your environment. File integrity monitoring, vulnerability detection, and real-time alerting mean issues are caught in minutes, not discovered months later during an audit — built around the CIS Controls' continuous monitoring safeguard.</p>
+        <div class="card-tool"><span class="dot" style="background:#0d9488;"></span>Powered by <strong>Wazuh</strong></div>
       </div>
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5"/></svg></div>
+        <div class="card-icon" style="color:#e2521d;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <circle cx="16" cy="16" r="4" stroke-width="1.6"/><path d="M16 8v3M16 21v3M8 16h3M21 16h3" stroke-width="1.6"/>
+        </svg></div>
         <h3>Penetration Testing</h3>
-        <p>Real offensive assessments against your infrastructure using industry-standard tooling — the same techniques an actual attacker would use, so you find your gaps before someone else does.</p>
+        <p>Real offensive assessments against your infrastructure using industry-standard tooling — the same techniques an actual attacker would use, mapped against the MITRE ATT&amp;CK matrix, so you find your gaps before someone else does.</p>
+        <div class="card-tool"><span class="dot" style="background:#e2521d;"></span>Powered by <strong>Metasploit</strong></div>
       </div>
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+        <div class="card-icon" style="color:#d97706;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <path d="M11.5 14a5 5 0 0 1 8-3.2l1.5 1.2" stroke-width="1.6"/><path d="M21 9v3.5h-3.5" stroke-width="1.6"/>
+          <path d="M20.5 18a5 5 0 0 1-8 3.2l-1.5-1.2" stroke-width="1.6"/><path d="M11 23v-3.5h3.5" stroke-width="1.6"/>
+        </svg></div>
         <h3>Security Automation &amp; Response</h3>
-        <p>Automated playbooks act on alerts the moment they fire — enrichment, containment, and notification triggered instantly, without waiting on a human to be available at 2am.</p>
+        <p>Automated playbooks act on alerts the moment they fire — enrichment, containment, and notification triggered instantly, without waiting on a human to be available at 2am, covering the NIST CSF Respond function.</p>
+        <div class="card-tool"><span class="dot" style="background:#d97706;"></span>Powered by <strong>Shuffle</strong></div>
       </div>
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="card-icon" style="color:#7c3aed;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <path d="M9 16s3-4.5 7-4.5 7 4.5 7 4.5-3 4.5-7 4.5-7-4.5-7-4.5z" stroke-width="1.6"/><circle cx="16" cy="16" r="2" stroke-width="1.6"/>
+        </svg></div>
         <h3>Deception &amp; Honeypots</h3>
-        <p>An isolated decoy environment attracts and studies real attacker behavior, giving early warning of active threats before your production systems are ever touched.</p>
+        <p>An isolated decoy environment attracts and studies real attacker behavior, giving early warning of active threats before your production systems are ever touched — observed activity gets catalogued against MITRE ATT&amp;CK.</p>
+        <div class="card-tool"><span class="dot" style="background:#7c3aed;"></span>Powered by <strong>T-Pot</strong></div>
       </div>
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v2h6V3"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="card-icon" style="color:#2563eb;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <path d="M16 9l5 1.8v4.4c0 3.6-2.1 6-5 7-2.9-1-5-3.4-5-7v-4.4L16 9z" stroke-width="1.6"/><path d="M13.3 16l1.8 1.8 3.6-3.6" stroke-width="1.6"/>
+        </svg></div>
         <h3>Compliance &amp; Governance</h3>
-        <p>Policy, risk, and continuity documentation mapped to recognized frameworks — built for organizations that need to demonstrate their security posture, not just maintain it privately.</p>
+        <p>Policy, risk, and continuity documentation structured around the NIST Cybersecurity Framework — built for organizations that need to demonstrate their security posture, not just maintain it privately.</p>
+        <div class="card-tool"><span class="dot" style="background:#0d9488;"></span>Powered by <strong>Wazuh</strong> compliance modules</div>
       </div>
       <div class="card">
-        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+        <div class="card-icon" style="color:#be185d;"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10V6a2 2 0 0 1 2-2h4" stroke-width="2"/><path d="M28 10V6a2 2 0 0 0-2-2h-4" stroke-width="2"/>
+          <path d="M4 22v4a2 2 0 0 0 2 2h4" stroke-width="2"/><path d="M28 22v4a2 2 0 0 1-2 2h-4" stroke-width="2"/>
+          <path d="M16 11l5.5 9.5h-11L16 11z" stroke-width="1.6"/><path d="M16 15.2v2.3" stroke-width="1.6"/><circle cx="16" cy="19.6" r="0.7" fill="currentColor" stroke="none"/>
+        </svg></div>
         <h3>Incident Response Planning</h3>
-        <p>A tested plan for the day something goes wrong — roles, escalation paths, and recovery steps defined and rehearsed before you need them, not improvised while it's happening.</p>
+        <p>A tested plan for the day something goes wrong — roles, escalation paths, and recovery steps defined and rehearsed before you need them, not improvised while it's happening, aligned to the NIST CSF Respond and Recover functions.</p>
+        <div class="card-tool"><span class="dot" style="background:#d97706;"></span>Executed via <strong>Shuffle</strong> playbooks</div>
+      </div>
+    </div>
+    <div class="framework-intro">Every service above is grounded in a recognized framework, not improvised:</div>
+    <div class="framework-row">
+      <div class="framework-badge"><span class="fw-name">NIST CSF</span><span class="fw-desc">The NIST Cybersecurity Framework organizes everything we do into core functions — Govern, Identify, Protect, Detect, Respond, Recover — so risk decisions and priorities follow a recognized structure, not guesswork.</span></div>
+      <div class="framework-badge"><span class="fw-name">CIS Controls</span><span class="fw-desc">A prioritized, actionable set of safeguards — asset inventory, secure configuration, access control, continuous monitoring — that turns strategy into specific technical hardening steps we actually implement.</span></div>
+      <div class="framework-badge"><span class="fw-name">MITRE ATT&amp;CK</span><span class="fw-desc">A knowledge base of real-world attacker tactics and techniques, used as a common language to map both our penetration testing and our detection coverage to what attackers actually do.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Our Toolset</div>
+      <h2>Built on recognized tools</h2>
+      <p>No proprietary black boxes — the same open-source tools used across the security industry, so nothing you're protected by is a mystery.</p>
+    </div>
+    <div class="tool-list">
+      <div class="tool-row">
+        <div class="tool-logo-chip"><img src="assets/logos/wazuh.svg" alt="Wazuh logo" class="tool-logo"></div>
+        <div class="tool-text"><h3>Wazuh — Detection &amp; SIEM</h3><p>Open-source SIEM and XDR platform. Correlates logs across your environment in real time to catch intrusions, policy violations, and vulnerabilities as they happen, not weeks later.</p></div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-logo-chip"><img src="assets/logos/metasploit.svg" alt="Metasploit logo" class="tool-logo"></div>
+        <div class="tool-text"><h3>Metasploit — Offensive Testing</h3><p>The industry-standard penetration testing framework. Used to safely simulate real attacker techniques against your own infrastructure, under controlled conditions, to find gaps before someone else does.</p></div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-logo-chip"><img src="assets/logos/shuffle_topleft.svg" alt="Shuffle logo" class="tool-logo"></div>
+        <div class="tool-text"><h3>Shuffle — Security Automation (SOAR)</h3><p>Open-source security orchestration and automated response. Turns a detection alert into an automated containment or notification action immediately, instead of waiting on a human to be available.</p></div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-logo-chip"><img src="assets/logos/tpot.png" alt="T-Pot logo" class="tool-logo-badge"></div>
+        <div class="tool-text"><h3>T-Pot — Deception &amp; Honeypots</h3><p>A multi-honeypot platform that deploys decoy systems to attract and study real attacker behavior, giving early warning of active threats before production systems are ever touched.</p></div>
       </div>
     </div>
   </div>
@@ -406,24 +521,24 @@
     </div>
     <div class="process">
       <div class="process-step">
-        <div class="process-num">01</div>
-        <div><h3>Discovery &amp; Risk Assessment</h3><p>We map your environment, assets, and current exposure in a conversation, not a questionnaire — what you actually have, what matters most to the business, and where the real risk sits today.</p></div>
+        <div class="process-text"><h3>Discovery &amp; Risk Assessment</h3><p>We map your environment, assets, and current exposure in a conversation, not a questionnaire — what you actually have, what matters most to the business, and where the real risk sits today.</p></div>
+        <div class="process-img"><img src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?auto=format&fit=crop&w=400&h=300&q=70" alt="Magnifying glass, representing risk discovery" loading="lazy"></div>
       </div>
       <div class="process-step">
-        <div class="process-num">02</div>
-        <div><h3>Scoping &amp; Architecture</h3><p>A tailored plan for detection, response, and testing coverage, sized to your environment and budget. You get exactly the tooling you need — nothing sold to you because it's on a package tier.</p></div>
+        <div class="process-text"><h3>Scoping &amp; Architecture</h3><p>A tailored plan for detection, response, and testing coverage, sized to your environment and budget. You get exactly the tooling you need — nothing sold to you because it's on a package tier.</p></div>
+        <div class="process-img"><img src="https://images.unsplash.com/photo-1571666521805-f5e8423aba9d?auto=format&fit=crop&w=400&h=300&q=70" alt="Flowchart diagram on a wall, representing architecture planning" loading="lazy"></div>
       </div>
       <div class="process-step">
-        <div class="process-num">03</div>
-        <div><h3>Deployment</h3><p>Detection and automation stood up in an environment built specifically for your business — nothing shared with, or visible to, any other client.</p></div>
+        <div class="process-text"><h3>Deployment</h3><p>Detection and automation stood up in an environment built specifically for your business — nothing shared with, or visible to, any other client.</p></div>
+        <div class="process-img"><img src="https://images.unsplash.com/photo-1744868562210-fffb7fa882d9?auto=format&fit=crop&w=400&h=300&q=70" alt="Neatly connected network cables, representing deployment" loading="lazy"></div>
       </div>
       <div class="process-step">
-        <div class="process-num">04</div>
-        <div><h3>Validation</h3><p>Live testing against your own defenses confirms detection and response actually work under real conditions, not just that the software is installed and running.</p></div>
+        <div class="process-text"><h3>Validation</h3><p>Live testing against your own defenses confirms detection and response actually work under real conditions, not just that the software is installed and running.</p></div>
+        <div class="process-img"><img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=400&h=300&q=70" alt="Source code on a monitor, representing validation testing" loading="lazy"></div>
       </div>
       <div class="process-step">
-        <div class="process-num">05</div>
-        <div><h3>Ongoing Monitoring &amp; Reporting</h3><p>Regular, plain-language reporting on what was seen, what was blocked, and where your posture is trending — security as an ongoing relationship with someone who knows your business, not a one-time project.</p></div>
+        <div class="process-text"><h3>Ongoing Monitoring &amp; Reporting</h3><p>Regular, plain-language reporting on what was seen, what was blocked, and where your posture is trending — security as an ongoing relationship with someone who knows your business, not a one-time project.</p></div>
+        <div class="process-img"><img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=400&h=300&q=70" alt="Business analytics dashboard, representing ongoing reporting" loading="lazy"></div>
       </div>
     </div>
   </div>
@@ -475,7 +590,7 @@
       </details>
       <details>
         <summary>What's the honeypot / network-packets.com about?</summary>
-        <p>It's a live, public demonstration environment — a deliberately exposed system that attracts real attacker activity, so you can see actual detection and response in action rather than take a sales pitch's word for it.</p>
+        <p>It's a public demonstration environment currently in development — a deliberately exposed system designed to attract real attacker activity, so you'll be able to see actual detection and response in action rather than take a sales pitch's word for it. Ask us for a status update if you're curious where it stands.</p>
       </details>
     </div>
   </div>
@@ -485,8 +600,8 @@
   <div class="container">
     <div class="results-card">
       <h3 class="serif">Building our client track record</h3>
-      <p>Data-Frames is a new engagement — we'd rather tell you that plainly than manufacture case studies that don't exist yet. In the meantime, you can see the underlying detection and response capability for yourself, live, at our public demo environment.</p>
-      <a href="#contact" class="btn-secondary">Ask About the Live Demo</a>
+      <p>Data-Frames is a new engagement — we'd rather tell you that plainly than manufacture case studies that don't exist yet. We're also building a public demo environment so you'll eventually be able to see the underlying detection and response capability for yourself, not just take our word for it.</p>
+      <a href="#contact" class="btn-secondary">Ask About Our Progress</a>
     </div>
   </div>
 </section>
