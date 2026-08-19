@@ -6,47 +6,45 @@
 <title>Data-Frames | Enterprise-Level Security, SMB-Friendly Pricing</title>
 <style>
   :root {
-    --bg: #0a0e17;
-    --bg-panel: #10151f;
-    --bg-panel-alt: #0d1220;
-    --border: #1e2736;
-    --cyan: #22d3ee;
-    --cyan-dim: #0e7490;
-    --text: #e2e8f0;
-    --text-dim: #8896ab;
-    --text-faint: #55627a;
-    --green: #4ade80;
-    --amber: #fbbf24;
-    --red: #f87171;
+    --bg: #f7f5f1;
+    --bg-panel: #ffffff;
+    --bg-panel-alt: #f0ede6;
+    --border: #e2ddd2;
+    --ink: #16211c;
+    --text: #2b352f;
+    --text-dim: #5f6b63;
+    --text-faint: #96a099;
+    --accent: #0f6b5c;
+    --accent-dim: #0a4c41;
+    --accent-tint: #e6f0ed;
+    --amber: #b5790f;
+    --red: #b03a2e;
+    --green: #2f7a4f;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
+  .serif { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; }
   .mono { font-family: "Consolas", "SF Mono", Menlo, monospace; }
 
-  a { color: var(--cyan); text-decoration: none; }
+  a { color: var(--accent); text-decoration: none; }
 
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
   /* Nav */
   header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10, 14, 23, 0.9);
+    background: rgba(247, 245, 241, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border);
   }
@@ -54,341 +52,267 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 24px;
-    max-width: 1100px;
+    padding: 20px 24px;
+    max-width: 1120px;
     margin: 0 auto;
   }
   .logo {
+    font-family: Georgia, serif;
     font-weight: 700;
-    font-size: 1.15rem;
-    letter-spacing: 0.02em;
-    color: var(--text);
+    font-size: 1.3rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
   }
-  .logo span { color: var(--cyan); }
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    font-size: 0.92rem;
-  }
-  .nav-links a { color: var(--text-dim); transition: color 0.15s; }
-  .nav-links a:hover { color: var(--cyan); }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 32px; font-size: 0.92rem; }
+  .nav-links a { color: var(--text-dim); font-weight: 500; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent); }
   .nav-cta {
-    background: var(--cyan);
-    color: #06202b;
-    padding: 9px 18px;
-    border-radius: 6px;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
   }
-  .nav-cta:hover { background: #67e3fa; }
+  .nav-cta:hover { background: var(--accent-dim); }
 
   /* Hero */
   .hero {
-    padding: 88px 0 96px;
+    padding: 96px 0 104px;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 56px;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 64px;
     align-items: center;
+    border-top: none;
   }
   .eyebrow {
-    color: var(--cyan);
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 16px;
+    font-weight: 700;
+    margin-bottom: 18px;
   }
   h1 {
-    font-size: 2.6rem;
-    line-height: 1.15;
+    font-family: Georgia, serif;
+    font-size: 3rem;
+    line-height: 1.1;
     font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 22px;
+    letter-spacing: -0.015em;
   }
-  h1 .accent { color: var(--cyan); }
+  h1 .accent { color: var(--accent); font-style: italic; }
   .hero p.lead {
     color: var(--text-dim);
-    font-size: 1.08rem;
-    max-width: 46ch;
-    margin-bottom: 32px;
+    font-size: 1.14rem;
+    max-width: 48ch;
+    margin-bottom: 34px;
   }
-  .hero-ctas { display: flex; gap: 14px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn-primary {
-    background: var(--cyan);
-    color: #06202b;
-    padding: 13px 24px;
-    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    padding: 14px 26px;
+    border-radius: 4px;
     font-weight: 600;
     font-size: 0.95rem;
     display: inline-block;
   }
-  .btn-primary:hover { background: #67e3fa; }
+  .btn-primary:hover { background: var(--accent-dim); }
   .btn-secondary {
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 13px 24px;
-    border-radius: 6px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 14px 26px;
+    border-radius: 4px;
     font-weight: 600;
     font-size: 0.95rem;
     display: inline-block;
   }
-  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+  .btn-secondary:hover { background: var(--ink); color: #fff; }
 
-  /* Signal log panel */
+  /* Signal panel (light) */
   .signal-panel {
     background: var(--bg-panel);
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.04), 0 20px 60px -20px rgba(0,0,0,0.6);
+    box-shadow: 0 24px 60px -32px rgba(22, 33, 28, 0.25);
   }
   .signal-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
+    padding: 13px 18px;
     border-bottom: 1px solid var(--border);
     background: var(--bg-panel-alt);
   }
   .signal-panel-title {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    letter-spacing: 0.04em;
   }
   .live-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
+    width: 7px; height: 7px; border-radius: 50%;
     background: var(--green);
-    box-shadow: 0 0 8px var(--green);
+    box-shadow: 0 0 6px rgba(47,122,79,0.5);
     animation: pulse 1.8s ease-in-out infinite;
   }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
   .signal-dots { display: flex; gap: 5px; }
-  .signal-dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+  .signal-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
 
-  .signal-log {
-    height: 320px;
-    overflow: hidden;
-    padding: 10px 0;
-    position: relative;
-  }
-  .signal-log-track {
-    display: flex;
-    flex-direction: column;
-    animation: scrollLog 22s linear infinite;
-  }
-  @keyframes scrollLog {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-50%); }
-  }
+  .signal-log { height: 320px; overflow: hidden; padding: 8px 0; }
+  .signal-log-track { display: flex; flex-direction: column; animation: scrollLog 22s linear infinite; }
+  @keyframes scrollLog { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
   .log-line {
-    display: flex;
-    gap: 10px;
-    padding: 6px 16px;
-    font-size: 0.76rem;
-    white-space: nowrap;
-    border-bottom: 1px solid rgba(255,255,255,0.02);
+    display: flex; gap: 10px; padding: 7px 18px;
+    font-size: 0.75rem; white-space: nowrap;
+    border-bottom: 1px solid var(--bg-panel-alt);
   }
   .log-time { color: var(--text-faint); flex-shrink: 0; }
-  .log-tag {
-    flex-shrink: 0;
-    font-weight: 700;
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-size: 0.68rem;
-  }
-  .log-tag.info { color: var(--cyan); background: rgba(34,211,238,0.1); }
-  .log-tag.warn { color: var(--amber); background: rgba(251,191,36,0.1); }
-  .log-tag.crit { color: var(--red); background: rgba(248,113,113,0.1); }
-  .log-tag.ok { color: var(--green); background: rgba(74,222,128,0.1); }
+  .log-tag { flex-shrink: 0; font-weight: 700; padding: 1px 6px; border-radius: 3px; font-size: 0.66rem; }
+  .log-tag.info { color: var(--accent-dim); background: var(--accent-tint); }
+  .log-tag.warn { color: var(--amber); background: #f7ecd8; }
+  .log-tag.crit { color: var(--red); background: #f6e2df; }
+  .log-tag.ok   { color: var(--green); background: #e3f0e7; }
   .log-msg { color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; }
 
   /* Sections */
-  section { padding: 88px 0; border-top: 1px solid var(--border); }
-  .section-head { max-width: 60ch; margin-bottom: 48px; }
+  section { padding: 100px 0; border-top: 1px solid var(--border); }
+  .section-head { max-width: 62ch; margin-bottom: 52px; }
   .section-eyebrow {
-    color: var(--cyan);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 12px;
+    color: var(--accent); font-size: 0.8rem; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 700; margin-bottom: 14px;
   }
-  h2 { font-size: 1.9rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
-  .section-head p { color: var(--text-dim); font-size: 1.02rem; }
+  h2 {
+    font-family: Georgia, serif;
+    font-size: 2.15rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 14px; letter-spacing: -0.01em;
+  }
+  .section-head p { color: var(--text-dim); font-size: 1.05rem; }
 
   /* Services grid */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 26px;
-  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 30px; }
   .card-icon {
-    width: 38px; height: 38px;
-    border-radius: 8px;
-    background: rgba(34,211,238,0.1);
-    color: var(--cyan);
+    width: 42px; height: 42px; border-radius: 8px;
+    background: var(--accent-tint); color: var(--accent-dim);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
-  .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
-  .card p { color: var(--text-dim); font-size: 0.92rem; }
+  .card-icon svg { width: 21px; height: 21px; }
+  .card h3 { font-size: 1.08rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+  .card p { color: var(--text-dim); font-size: 0.93rem; }
 
   /* Process */
-  .process {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
+  .process { display: flex; flex-direction: column; }
   .process-step {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 20px;
-    padding: 22px 0;
-    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 60px 1fr; gap: 24px;
+    padding: 26px 0; border-bottom: 1px solid var(--border);
   }
   .process-step:last-child { border-bottom: none; }
   .process-num {
-    font-family: "Consolas", monospace;
-    color: var(--cyan);
-    font-size: 0.85rem;
-    font-weight: 700;
-    border: 1px solid var(--cyan-dim);
-    border-radius: 50%;
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif; color: var(--accent); font-size: 1.05rem; font-weight: 700;
+    border: 1px solid var(--accent); border-radius: 50%;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
   }
-  .process-step h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
-  .process-step p { color: var(--text-dim); font-size: 0.92rem; }
+  .process-step h3 { font-size: 1.08rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+  .process-step p { color: var(--text-dim); font-size: 0.94rem; max-width: 62ch; }
 
-  /* Credentials */
-  .credentials {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
+  /* About */
+  .about-wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: start; }
+  .about-copy p { color: var(--text); font-size: 1.03rem; margin-bottom: 18px; max-width: 56ch; }
+  .about-copy p:last-child { margin-bottom: 0; }
+  .credentials { display: flex; flex-direction: column; gap: 16px; }
   .stat-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 26px;
-    text-align: center;
+    background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 22px 26px; display: flex; align-items: baseline; gap: 14px;
   }
-  .stat-num { font-size: 2.1rem; font-weight: 700; color: var(--cyan); margin-bottom: 6px; }
+  .stat-num { font-family: Georgia, serif; font-size: 1.7rem; font-weight: 700; color: var(--accent); }
   .stat-label { color: var(--text-dim); font-size: 0.88rem; }
-  .cred-note {
-    margin-top: 24px;
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    border-left: 2px solid var(--cyan-dim);
-    padding-left: 16px;
+
+  /* FAQ */
+  .faq-list { max-width: 760px; }
+  details {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
   }
+  details:first-child { border-top: 1px solid var(--border); }
+  summary {
+    font-weight: 600; color: var(--ink); font-size: 1.02rem;
+    cursor: pointer; list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; color: var(--accent); font-size: 1.3rem; font-weight: 400; margin-left: 20px; flex-shrink: 0;
+  }
+  details[open] summary::after { content: "\2212"; }
+  details p { color: var(--text-dim); font-size: 0.95rem; margin-top: 14px; max-width: 64ch; }
+
+  /* Results placeholder */
+  .results-card {
+    background: var(--bg-panel); border: 1px dashed var(--border); border-radius: 8px;
+    padding: 44px; text-align: center; max-width: 720px; margin: 0 auto;
+  }
+  .results-card h3 { font-family: Georgia, serif; font-size: 1.3rem; color: var(--ink); margin-bottom: 12px; }
+  .results-card p { color: var(--text-dim); font-size: 0.97rem; max-width: 52ch; margin: 0 auto 20px; }
 
   /* Pricing */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .price-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 30px 26px;
-    display: flex;
-    flex-direction: column;
+    background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 32px 28px; display: flex; flex-direction: column;
   }
-  .price-card.featured {
-    border-color: var(--cyan-dim);
-    box-shadow: 0 0 0 1px rgba(34,211,238,0.15);
-  }
-  .price-tier { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-  .price-amount { font-size: 1.7rem; font-weight: 700; margin-bottom: 4px; }
-  .price-amount span { font-size: 0.9rem; color: var(--text-dim); font-weight: 400; }
-  .price-cad { font-size: 0.78rem; color: var(--text-faint); margin-bottom: 20px; }
-  .price-features { list-style: none; margin-bottom: 24px; flex-grow: 1; }
-  .price-features li {
-    font-size: 0.88rem;
-    color: var(--text-dim);
-    padding: 7px 0;
-    border-top: 1px solid var(--border);
-  }
+  .price-card.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .price-tier { font-size: 0.84rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; margin-bottom: 12px; }
+  .price-amount { font-family: Georgia, serif; font-size: 1.7rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .price-amount span { font-size: 0.85rem; color: var(--text-dim); font-weight: 400; font-family: -apple-system, sans-serif; }
+  .price-cad { font-size: 0.78rem; color: var(--text-faint); margin-bottom: 22px; }
+  .price-features { list-style: none; margin-bottom: 26px; flex-grow: 1; }
+  .price-features li { font-size: 0.89rem; color: var(--text-dim); padding: 9px 0; border-top: 1px solid var(--border); }
   .price-features li:first-child { border-top: none; }
   .addon-note {
-    margin-top: 20px;
-    padding: 16px 20px;
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.88rem;
-    color: var(--text-dim);
+    margin-top: 24px; padding: 18px 22px; background: var(--accent-tint);
+    border-radius: 8px; font-size: 0.89rem; color: var(--accent-dim);
   }
-  .addon-note strong { color: var(--text); }
+  .addon-note strong { color: var(--ink); }
 
   /* Contact */
   .contact-wrap {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 40px;
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 40px;
+    background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 44px; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 44px;
   }
-  .contact-info h3 { font-size: 1.2rem; margin-bottom: 10px; }
-  .contact-info p { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 20px; }
-  .contact-info a.email { color: var(--cyan); font-size: 0.95rem; }
+  .contact-info h3 { font-family: Georgia, serif; font-size: 1.35rem; color: var(--ink); margin-bottom: 12px; }
+  .contact-info p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 22px; }
+  .contact-info a.email { color: var(--accent); font-weight: 600; font-size: 0.97rem; }
   form { display: flex; flex-direction: column; gap: 14px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   input, textarea {
-    background: var(--bg-panel-alt);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 11px 14px;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-family: inherit;
-    width: 100%;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 5px;
+    padding: 12px 14px; color: var(--text); font-size: 0.9rem; font-family: inherit; width: 100%;
   }
-  input:focus, textarea:focus { outline: none; border-color: var(--cyan-dim); }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
   textarea { resize: vertical; min-height: 90px; }
   .form-submit {
-    background: var(--cyan);
-    color: #06202b;
-    border: none;
-    border-radius: 6px;
-    padding: 13px 24px;
-    font-weight: 600;
-    font-size: 0.92rem;
-    cursor: pointer;
-    align-self: flex-start;
+    background: var(--accent); color: #fff; border: none; border-radius: 5px;
+    padding: 14px 26px; font-weight: 600; font-size: 0.93rem; cursor: pointer; align-self: flex-start;
   }
-  .form-submit:hover { background: #67e3fa; }
-  .form-status { font-size: 0.85rem; color: var(--green); display: none; }
+  .form-submit:hover { background: var(--accent-dim); }
+  .form-status { font-size: 0.85rem; color: var(--accent-dim); font-weight: 600; display: none; }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 32px 0;
-    text-align: center;
-    color: var(--text-faint);
-    font-size: 0.85rem;
-  }
+  footer { border-top: 1px solid var(--border); padding: 36px 0; text-align: center; color: var(--text-faint); font-size: 0.85rem; }
 
   @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; padding: 56px 0; }
-    .grid, .credentials, .pricing-grid { grid-template-columns: 1fr; }
+    .hero, .about-wrap { grid-template-columns: 1fr; padding-top: 56px; }
+    .grid, .pricing-grid { grid-template-columns: 1fr; }
     .contact-wrap { grid-template-columns: 1fr; padding: 28px; }
     .form-row { grid-template-columns: 1fr; }
-    h1 { font-size: 2rem; }
+    h1 { font-size: 2.2rem; }
     .nav-links { display: none; }
   }
 </style>
@@ -402,6 +326,7 @@
       <a href="#services">Services</a>
       <a href="#process">Process</a>
       <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
       <a href="#pricing">Pricing</a>
     </div>
     <a href="#contact" class="nav-cta">Get a Quote</a>
@@ -413,7 +338,7 @@
     <div>
       <div class="eyebrow">SMB Cybersecurity Consulting</div>
       <h1>Enterprise-level security. <span class="accent">SMB-friendly pricing.</span></h1>
-      <p class="lead">Data-Frames brings continuous threat detection, real offensive testing, and automated response to small businesses who need real protection without an enterprise budget or an in-house SOC.</p>
+      <p class="lead">Data-Frames brings continuous threat detection, real offensive testing, and automated response to small businesses who need genuine protection without an enterprise budget or an in-house security team.</p>
       <div class="hero-ctas">
         <a href="#contact" class="btn-primary">Request a Consultation</a>
         <a href="#services" class="btn-secondary">See What We Monitor</a>
@@ -425,9 +350,7 @@
         <div class="signal-panel-title"><span class="live-dot"></span> LIVE SIGNAL FEED</div>
         <div class="signal-dots"><span></span><span></span><span></span></div>
       </div>
-      <div class="signal-log">
-        <div class="signal-log-track mono" id="logTrack"></div>
-      </div>
+      <div class="signal-log"><div class="signal-log-track mono" id="logTrack"></div></div>
     </div>
   </section>
 </div>
@@ -437,38 +360,38 @@
     <div class="section-head">
       <div class="section-eyebrow">Services</div>
       <h2>Full-stack defense, built for SMB budgets</h2>
-      <p>Each layer runs independently and reports up — detection, response, and offense are never confused with one another.</p>
+      <p>Each layer runs independently and reports up — detection, response, and offense are never confused with one another, and you always know which system caught what.</p>
     </div>
     <div class="grid">
       <div class="card">
-        <div class="card-icon">◉</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg></div>
         <h3>Threat Detection &amp; SIEM</h3>
-        <p>Continuous log correlation and alerting across your environment, built on Wazuh — file integrity monitoring, vulnerability detection, and real-time alerting.</p>
+        <p>Continuous log correlation and alerting across your environment. File integrity monitoring, vulnerability detection, and real-time alerting mean issues are caught in minutes, not discovered months later during an audit.</p>
       </div>
       <div class="card">
-        <div class="card-icon">▲</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5"/></svg></div>
         <h3>Penetration Testing</h3>
-        <p>Real offensive assessments against your infrastructure using industry-standard tooling, so you find your gaps before an attacker does.</p>
+        <p>Real offensive assessments against your infrastructure using industry-standard tooling — the same techniques an actual attacker would use, so you find your gaps before someone else does.</p>
       </div>
       <div class="card">
-        <div class="card-icon">⟳</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
         <h3>Security Automation &amp; Response</h3>
-        <p>Automated playbooks that act on alerts the moment they fire — enrichment, containment, and notification without waiting on a human at 2am.</p>
+        <p>Automated playbooks act on alerts the moment they fire — enrichment, containment, and notification triggered instantly, without waiting on a human to be available at 2am.</p>
       </div>
       <div class="card">
-        <div class="card-icon">◈</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         <h3>Deception &amp; Honeypots</h3>
-        <p>An isolated honeypot environment that attracts and studies real attacker behavior, giving early warning before your production systems are touched.</p>
+        <p>An isolated decoy environment attracts and studies real attacker behavior, giving early warning of active threats before your production systems are ever touched.</p>
       </div>
       <div class="card">
-        <div class="card-icon">▤</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v2h6V3"/><path d="M9 12l2 2 4-4"/></svg></div>
         <h3>Compliance &amp; Governance</h3>
-        <p>Policy, risk, and continuity documentation mapped to recognized frameworks — built for organizations that need to show their work, not just do it.</p>
+        <p>Policy, risk, and continuity documentation mapped to recognized frameworks — built for organizations that need to demonstrate their security posture, not just maintain it privately.</p>
       </div>
       <div class="card">
-        <div class="card-icon">◐</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
         <h3>Incident Response Planning</h3>
-        <p>A tested plan for the day something goes wrong — roles, escalation paths, and recovery steps defined before you need them, not during.</p>
+        <p>A tested plan for the day something goes wrong — roles, escalation paths, and recovery steps defined and rehearsed before you need them, not improvised while it's happening.</p>
       </div>
     </div>
   </div>
@@ -479,28 +402,28 @@
     <div class="section-head">
       <div class="section-eyebrow">Engagement</div>
       <h2>How an engagement runs</h2>
-      <p>Five steps from first conversation to ongoing protection.</p>
+      <p>Five steps from first conversation to ongoing protection — no long procurement cycle, no jargon you need a translator for.</p>
     </div>
     <div class="process">
       <div class="process-step">
         <div class="process-num">01</div>
-        <div><h3>Discovery &amp; Risk Assessment</h3><p>We map your environment, assets, and current exposure — what you have, what matters most, and where the real risk sits.</p></div>
+        <div><h3>Discovery &amp; Risk Assessment</h3><p>We map your environment, assets, and current exposure in a conversation, not a questionnaire — what you actually have, what matters most to the business, and where the real risk sits today.</p></div>
       </div>
       <div class="process-step">
         <div class="process-num">02</div>
-        <div><h3>Scoping &amp; Architecture</h3><p>A tailored plan for detection, response, and testing coverage, sized to your environment and budget — no unnecessary tooling.</p></div>
+        <div><h3>Scoping &amp; Architecture</h3><p>A tailored plan for detection, response, and testing coverage, sized to your environment and budget. You get exactly the tooling you need — nothing sold to you because it's on a package tier.</p></div>
       </div>
       <div class="process-step">
         <div class="process-num">03</div>
-        <div><h3>Deployment</h3><p>Detection and automation stood up in an isolated environment built for your business — nothing shared with other clients.</p></div>
+        <div><h3>Deployment</h3><p>Detection and automation stood up in an environment built specifically for your business — nothing shared with, or visible to, any other client.</p></div>
       </div>
       <div class="process-step">
         <div class="process-num">04</div>
-        <div><h3>Validation</h3><p>Live testing against your own defenses confirms detection and response actually work, not just that they're installed.</p></div>
+        <div><h3>Validation</h3><p>Live testing against your own defenses confirms detection and response actually work under real conditions, not just that the software is installed and running.</p></div>
       </div>
       <div class="process-step">
         <div class="process-num">05</div>
-        <div><h3>Ongoing Monitoring &amp; Reporting</h3><p>Regular reporting on what was seen, what was blocked, and where your posture is trending — security as an ongoing relationship, not a one-time project.</p></div>
+        <div><h3>Ongoing Monitoring &amp; Reporting</h3><p>Regular, plain-language reporting on what was seen, what was blocked, and where your posture is trending — security as an ongoing relationship with someone who knows your business, not a one-time project.</p></div>
       </div>
     </div>
   </div>
@@ -511,23 +434,60 @@
     <div class="section-head">
       <div class="section-eyebrow">About</div>
       <h2>Built on decades of hands-on experience</h2>
-      <p>Data-Frames is run directly by its founder — no account managers, no outsourced analysts.</p>
     </div>
-    <div class="credentials">
-      <div class="stat-card">
-        <div class="stat-num">30+</div>
-        <div class="stat-label">Years in IT &amp; Security</div>
+    <div class="about-wrap">
+      <div class="about-copy">
+        <p>Data-Frames is run directly by its founder — no account managers relaying information, no outsourced analysts you've never spoken to. When you call, you're talking to the person who actually configured your detection rules and ran your last assessment.</p>
+        <p>That comes from over three decades of hands-on IT and security work — not a career built around a single certification, but one built around actually keeping systems running and businesses protected, across enough different environments to know what really matters when something goes wrong versus what's just noise.</p>
+        <p>Data-Frames exists because SMBs are told they need "enterprise-grade" security and then handed enterprise pricing to match — or worse, nothing at all because it wasn't worth a big firm's time. That gap is the whole reason this business exists.</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">1:1</div>
-        <div class="stat-label">Direct access to who does the work</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">CISSP</div>
-        <div class="stat-label">Certification in progress</div>
+      <div class="credentials">
+        <div class="stat-card"><div class="stat-num">30+</div><div class="stat-label">Years in IT &amp; security, hands-on</div></div>
+        <div class="stat-card"><div class="stat-num">1:1</div><div class="stat-label">Direct access to who does the work — always</div></div>
+        <div class="stat-card"><div class="stat-num">CISSP</div><div class="stat-label">Certification in progress, targeting completion soon</div></div>
       </div>
     </div>
-    <p class="cred-note">Three decades of hands-on IT and security work, currently completing (ISC)&sup2; CISSP certification to formalize that experience against the industry's leading standard.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">FAQ</div>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>We're too small to be a target, right?</summary>
+        <p>This is the most common misconception in SMB security, and it's backwards — most modern attacks are automated and don't care about your size. Small businesses are frequently targeted specifically because they're assumed to have weaker defenses than large enterprises, not despite being small.</p>
+      </details>
+      <details>
+        <summary>What does a security assessment actually involve?</summary>
+        <p>A structured look at your current environment — network, endpoints, access controls, and any existing tooling — followed by real (not simulated) testing of your defenses where appropriate. You get a plain-language report of what was found and what to prioritize, not a 60-page document full of jargon.</p>
+      </details>
+      <details>
+        <summary>How is pricing structured?</summary>
+        <p>Flat monthly tiers in CAD, scoped to your environment during the discovery call — see the Pricing section below. No hourly billing surprises, no long-term contract required to get started.</p>
+      </details>
+      <details>
+        <summary>Do you replace our existing IT provider?</summary>
+        <p>Not necessarily — Data-Frames focuses specifically on security (detection, testing, response), and works alongside whoever handles your day-to-day IT rather than requiring you to switch providers.</p>
+      </details>
+      <details>
+        <summary>What's the honeypot / network-packets.com about?</summary>
+        <p>It's a live, public demonstration environment — a deliberately exposed system that attracts real attacker activity, so you can see actual detection and response in action rather than take a sales pitch's word for it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="container">
+    <div class="results-card">
+      <h3 class="serif">Building our client track record</h3>
+      <p>Data-Frames is a new engagement — we'd rather tell you that plainly than manufacture case studies that don't exist yet. In the meantime, you can see the underlying detection and response capability for yourself, live, at our public demo environment.</p>
+      <a href="#contact" class="btn-secondary">Ask About the Live Demo</a>
+    </div>
   </div>
 </section>
 
@@ -605,9 +565,7 @@
 </section>
 
 <footer>
-  <div class="container">
-    Data-Frames &middot; data-frames.com &middot; &copy; 2026
-  </div>
+  <div class="container">Data-Frames &middot; data-frames.com &middot; &copy; 2026</div>
 </footer>
 
 <script>
@@ -625,11 +583,7 @@
     { time: '14:04:08', tag: 'info', label: 'REPORT', msg: 'Weekly security summary generated for client' },
     { time: '14:04:20', tag: 'warn', label: 'FW',    msg: 'Anomalous port scan detected — rate-limited' },
   ];
-
-  function tagLabel(tag) {
-    return { info: 'INFO', warn: 'WARN', crit: 'CRIT', ok: 'OK' }[tag];
-  }
-
+  function tagLabel(tag) { return { info: 'INFO', warn: 'WARN', crit: 'CRIT', ok: 'OK' }[tag]; }
   function buildLog() {
     const track = document.getElementById('logTrack');
     const doubled = events.concat(events);
