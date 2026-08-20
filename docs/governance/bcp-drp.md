@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | **Document owner** | Aaron — Security Officer role (per [Information Security Policy](information-security-policy.md) §4) |
-| **Version** | 1.0 |
-| **Effective date** | 2026-08-19 |
+| **Version** | 1.1 |
+| **Effective date** | 2026-08-19 (v1.1 amendments effective 2026-08-20 — see §9) |
 | **Review cycle** | Annual, or after any disaster invoking this plan, or any material infrastructure change |
 | **CISSP domain mapping** | Domain 1 — Security & Risk Management (BC/DR planning) |
 | **Depends on** | [Risk Register](risk-register.md) §2–3 for asset inventory and impact ratings |
@@ -37,8 +37,9 @@ RPO (Recovery Point Objective) = how much data loss (measured in time) is tolera
 ## 3. Backup Strategy
 
 - **Website/repo**: git itself is the backup (distributed, every clone is complete). No separate backup process needed.
-- **Azure VMs (Wazuh, Metasploit lab, Shuffle)**: daily automated snapshot once built (network architecture phase) — not yet in place, tracked as risk register R-08 dependency.
-- **Honeypot captured data**: forwarded continuously to a store outside the honeypot VNet (e.g., the Wazuh manager or a separate storage account) rather than left only on the honeypot VM — so a honeypot rebuild never loses the intelligence that justified running it. Not yet implemented; design requirement for the honeypot build phase.
+- **Azure VMs**: daily automated backup for **Wazuh and Shuffle only** (7-day retention) — the systems holding irreplaceable state (detection history, tuned rules, playbooks). Not yet in place, tracked as risk register R-08 dependency. The **Metasploit lab is recovered from a golden image, not a daily backup**, consistent with its own §2 BIA entry ("rebuildable from scratch; not holding irreplaceable state") — a daily backup of it would cost money to protect nothing. See [Network Architecture](../../infra/network-architecture.md) D-04.
+- **Honeypot captured data**: forwarded continuously to a store outside the honeypot VNet rather than left only on the honeypot VM — so a honeypot rebuild never loses the intelligence that justified running it. **Resolved 2026-08-20**: this is an append-only storage account airlock that the honeypot writes to and the Wazuh manager separately pulls from — explicitly **not** direct forwarding to the Wazuh manager, which would create the routed cross-VNet path risk register R-02 exists to prevent. See [Network Architecture](../../infra/network-architecture.md) D-01. Designed, not yet implemented.
+- **Honeypot VM itself**: **deliberately not backed up.** A honeypot is a system expected to be compromised, so a daily snapshot is a daily snapshot of an attacker foothold, and restoring one restores the compromise. Recovery is a rebuild from a golden image (§5.3), and the captured intelligence is preserved by the forwarding above — which is why its RPO is "Continuous" while its RTO is the most relaxed in §2. See [Network Architecture](../../infra/network-architecture.md) D-04.
 - **DNS records**: exported/documented outside the registrar (so a GoDaddy account issue doesn't also destroy the record of what the records *were*). Not yet implemented — add to the network architecture phase.
 - **Credentials/secrets**: password manager / Azure Key Vault, never solely on the admin workstation (Policy §6, this doc §4).
 - **Client data**: synced/versioned storage, never solely on one device, per the Restricted-data handling rules in Policy §5.
@@ -88,3 +89,10 @@ All three roles are currently Aaron. **This is itself an accepted limitation**, 
 - **Tabletop exercise**: annual, minimum — walk through each scenario in §5 on paper and confirm the plan still matches reality (this is possible today even before all the infrastructure exists).
 - **Technical DR test**: once the Azure infrastructure is built (network architecture phase), simulate an actual VM loss and time the real restore against the RTO/RPO targets in §2 — a plan that's never been tested against real numbers is a guess, not a plan.
 - Any gap found during testing, or any real invocation of this plan, triggers an update to this document and the risk register before the next scheduled review.
+
+## 9. Change Log
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0 | 2026-08-19 | Initial plan |
+| 1.1 | 2026-08-20 | Amended following the network architecture design ([infra/network-architecture.md](../../infra/network-architecture.md)). Clarified §3 honeypot forwarding as a one-way storage airlock rather than direct forwarding to the Wazuh manager (which would conflict with R-02), and recorded that the honeypot VM is deliberately excluded from backup in favour of golden-image rebuild. |
