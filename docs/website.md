@@ -22,7 +22,7 @@ Supporting files: `404.html` (branded), `robots.txt`, `sitemap.xml`, `assets/og-
 
 ### Blocking a real launch
 
-- **The contact form discards every submission.** It calls `preventDefault()`, shows *"Thanks — we'll be in touch shortly."*, and resets. No `action`, no `fetch`, no `mailto`. Enquiries are lost while the visitor is told they succeeded — worse than having no form. This is the site's only conversion path. Options: a form backend service (Formspree/Web3Forms — free tiers, ~5 min, but a third party then holds client enquiries, which interacts with Policy §5 data handling); a `mailto:` submission (no third party, but exposes the address to scrapers and needs a configured mail client); replacing the form with direct contact details; or at minimum changing the copy so it stops claiming success.
+- **The contact form discards every submission.** It calls `preventDefault()`, shows *"Thanks — we'll be in touch shortly."*, and resets. No `action`, no `fetch`, and no `mailto` on the form itself. Enquiries are lost while the visitor is told they succeeded — worse than having no form. The `mailto:` link in the same section does work, so the site is not unreachable — but anyone who uses the form instead is silently dropped. Options: a form backend service (Formspree/Web3Forms — free tiers, ~5 min, but a third party then holds client enquiries, which interacts with Policy §5 data handling); a `mailto:` submission (no third party; note that `aaron@data-frames.com` is **already published as a live `mailto:` link** in the contact section, so the scraper exposure is already incurred and should not count against this option — it does still need the visitor to have a mail client configured); replacing the form with direct contact details; or at minimum changing the copy so it stops claiming success.
 - **No privacy policy exists.** Nothing is currently collected, so nothing is being mishandled — but a security and compliance consultancy with no privacy policy is a gap a healthcare or legal prospect may check. Becomes strictly necessary if any cookie-based analytics is added.
 
 ### Visitor tracking — nothing in place
@@ -41,11 +41,9 @@ Only the last two yield IP-level data. Note the tie-in with later phases: self-h
 
 ### QA not yet performed
 
-The 2026-08-20 pass covered HTTP status, links and anchors, image assets, mixed content, meta tags, accessibility markup, tag structure, redirects, DNS, and which files the artifact exposes. It did **not** cover:
+The 2026-08-20 passes covered HTTP status, links and anchors, image assets, mixed content, meta tags, accessibility markup, tag structure, redirects, DNS, which files the artifact exposes, WCAG contrast across every pairing the CSS actually uses, and a copy proofread. One area remains:
 
-- **Visual rendering** — viewport meta and media queries are present, but the page has never been rendered at mobile widths to confirm it actually looks right
-- **Colour contrast** — one WCAG contrast failure was fixed in the 2026-08-19 round; the rest of the palette has not been re-verified against the CSS variables
-- **Copy proofreading** — no spelling or grammar pass has been done on the prose
+- **Visual rendering** — viewport meta and media queries are present, but the layout has not been rendered at mobile widths to confirm it actually looks right. This needs a real browser; it cannot be checked from markup alone.
 
 ### Waiting on the CISSP result
 
@@ -59,5 +57,7 @@ The 2026-08-20 pass covered HTTP status, links and anchors, image assets, mixed 
 **Custom domain connected.** Nine DNS records at GoDaddy (4 × A, 4 × AAAA, 1 × `www` CNAME), custom domain set in Pages, Enforce HTTPS on. Required adding `CNAME` inside `website/` — see above.
 
 **QA pass (commit `988309a`).** Contact form had zero `<label>` elements (placeholder-only labelling fails WCAG 1.3.1/3.3.2) — added visually-hidden labels bound to real ids, wrapped inputs in `.field` divs to preserve the two-column grid, added `role="status" aria-live="polite"`. Inputs had no `name` attributes, so nothing would submit even with a backend — added, with `autocomplete` hints. Added `og:url`, `og:image`, `og:site_name`, Twitter card tags, and a canonical link, plus a generated `og-image.png`. Added `robots.txt`, `sitemap.xml`, and a branded `404.html`.
+
+**Contrast and copy (commit `9e94fbd`).** A contrast audit of every text/background pairing actually used in the CSS found two AA failures, both in the hero signal feed — the log tags are 0.66rem bold, far below the "large text" threshold, so they need the full 4.5:1. `.log-tag.warn` (amber `#b5790f` on `#f7ecd8`) was 3.14:1 and `.log-tag.ok` (green `#2f7a4f` on `#e3f0e7`) was 4.45:1. Darkened `--amber` to `#8f600c` (4.67:1) and `--green` to `#2e764d` (4.69:1) — the minimum change clearing AA with margin. Everything else already passed, including the footer at 4.71:1. Proofread found two errors: "small businesses who need" → "that need" (businesses take "that", and the meta and og descriptions already used it, so the hero was inconsistent), and "Data-Frames is a new engagement" → "a new practice".
 
 **Build notes removed from the published artifact.** See the note at the top.
