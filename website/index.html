@@ -8,6 +8,17 @@
 <meta property="og:title" content="Data-Frames | Enterprise-Level Security, SMB-Friendly Pricing">
 <meta property="og:description" content="Continuous threat detection, real offensive testing, and automated response for small businesses that need genuine protection without an enterprise budget.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://data-frames.com/">
+<meta property="og:image" content="https://data-frames.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Data-Frames — enterprise-level security, SMB-friendly pricing">
+<meta property="og:site_name" content="Data-Frames">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Data-Frames | Enterprise-Level Security, SMB-Friendly Pricing">
+<meta name="twitter:description" content="Continuous threat detection, real offensive testing, and automated response for small businesses that need genuine protection without an enterprise budget.">
+<meta name="twitter:image" content="https://data-frames.com/assets/og-image.png">
+<link rel="canonical" href="https://data-frames.com/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%2316211c'/%3E%3Cg fill='none' stroke='%230f6b5c' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 22 L6 50 L15 78'/%3E%3Ccircle cx='50' cy='50' r='31'/%3E%3Cpath d='M85 22 L94 50 L85 78'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root {
@@ -345,6 +356,11 @@
   }
   .form-submit:hover { background: var(--accent-dim); }
   .form-status { font-size: 0.85rem; color: var(--accent-dim); font-weight: 600; display: none; }
+  .field { display: flex; flex-direction: column; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
 
   footer { border-top: 1px solid var(--border); padding: 36px 0; text-align: center; color: var(--text-faint); font-size: 0.85rem; }
 
@@ -705,16 +721,31 @@
       </div>
       <form id="contactForm">
         <div class="form-row">
-          <input type="text" placeholder="Name" required>
-          <input type="text" placeholder="Company" required>
+          <div class="field">
+            <label class="visually-hidden" for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" placeholder="Name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label class="visually-hidden" for="f-company">Company</label>
+            <input id="f-company" name="company" type="text" placeholder="Company" autocomplete="organization" required>
+          </div>
         </div>
         <div class="form-row">
-          <input type="email" placeholder="Email" required>
-          <input type="tel" placeholder="Phone (optional)">
+          <div class="field">
+            <label class="visually-hidden" for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" placeholder="Email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label class="visually-hidden" for="f-phone">Phone (optional)</label>
+            <input id="f-phone" name="phone" type="tel" placeholder="Phone (optional)" autocomplete="tel">
+          </div>
         </div>
-        <textarea placeholder="What does your current environment look like?" required></textarea>
+        <div class="field">
+          <label class="visually-hidden" for="f-message">What does your current environment look like?</label>
+          <textarea id="f-message" name="message" placeholder="What does your current environment look like?" required></textarea>
+        </div>
         <button type="submit" class="form-submit">Send</button>
-        <div class="form-status" id="formStatus">Thanks — we'll be in touch shortly.</div>
+        <div class="form-status" id="formStatus" role="status" aria-live="polite">Thanks — we'll be in touch shortly.</div>
       </form>
     </div>
   </div>
