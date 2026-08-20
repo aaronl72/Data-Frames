@@ -17,7 +17,15 @@ Target markets:
 | `data-frames.com` | Business site — services, pricing, contact |
 | `network-packets.com` | Public honeypot, used as a live client-facing sales demo (kept isolated from the main site) |
 
-Both registered at GoDaddy. All infrastructure — Wazuh manager, Metasploit lab, honeypot, website hosting — runs on a single Azure IaaS subscription, split across two isolated VNets: one private for Wazuh + the Metasploit lab, one separate for the public honeypot. Version control via GitHub's free tier.
+Both registered at GoDaddy.
+
+**Azure vs. budget VPS — evaluated and settled 2026-08-20.** Budget VPS providers are genuinely cheaper on raw compute (Hetzner CX22 at roughly €4.50/mo and DigitalOcean/Vultr at $24/mo for 2 vCPU / 4 GB, against ~$30/mo for an Azure B2s before disks, egress, and IPs). Azure was kept anyway, for three reasons:
+
+1. **Acceptable use.** The lab both runs Metasploit and operates a public honeypot that attracts attack traffic. Hetzner monitors aggressively for scanning and has suspended servers within 1–2 hours of a port scan starting; DigitalOcean's AUP requires written permission for penetration testing with no documented process to obtain it. Azure explicitly permits testing against your own resources under its Rules of Engagement. The cheap option is cheap until the lab is used for what it exists to do.
+2. **The Phase 2 design depends on Azure-native constructs** — VNets/NSGs for R-02 isolation, the storage-account airlock for D-01, free Bastion Developer for D-03, Azure Backup for D-04, NSG flow logs for §7. The principles are provider-agnostic; the implementation and the Bicep are not, and would be rebuilt by hand with nftables, a self-managed bastion, and scripted backups. Free Bastion Developer also offsets part of the price gap, since a VPS would otherwise mean exposed SSH or a self-built bastion.
+3. **Commercial fit.** Target clients (healthcare, legal, accounting SMBs) are overwhelmingly Microsoft 365 shops, so Azure fluency transfers directly into client engagements.
+
+A cheap VPS remains a reasonable fit for one narrow job — nginx serving the marketing site to produce real access logs as a Wazuh source — since that involves no offensive traffic and no honeypot, and therefore no AUP friction. All infrastructure — Wazuh manager, Metasploit lab, honeypot, website hosting — runs on a single Azure IaaS subscription, split across two isolated VNets: one private for Wazuh + the Metasploit lab, one separate for the public honeypot. Version control via GitHub's free tier.
 
 ## Tool stack
 
