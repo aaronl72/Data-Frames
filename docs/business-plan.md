@@ -46,7 +46,7 @@ Prior work (a draft website, two governance docs) only ever existed as artifacts
 | # | Phase | CISSP Domain | Status |
 |---|---|---|---|
 | 1 | Governance | Domain 1 — Security & Risk Management | Markdown deliverables complete 2026-08-19 (Info Security Policy, Risk Register, BCP/DRP) — branded `.docx` exports still pending |
-| 2 | Network architecture | Domain 3 — Security Architecture & Engineering (+ Domain 4 — Communication & Network Security) | Design drafted 2026-08-20 ([infra/network-architecture.md](../infra/network-architecture.md)) — 4 decisions pending ruling; nothing provisioned yet |
+| 2 | Network architecture | Domain 3 — Security Architecture & Engineering (+ Domain 4 — Communication & Network Security) | Design drafted 2026-08-20 ([infra/network-architecture.md](../infra/network-architecture.md)) — v1.0, all 4 decisions accepted 2026-08-20; Bicep for VNets/subnets/NSGs written ([infra/bicep/](../infra/bicep/)), not yet deployed |
 | 3 | IAM | Domain 5 — Identity & Access Management | Not started |
 | 4 | Wazuh + website | Domain 7 — Security Operations (partly) | Website done (redesigned + branded 2026-08-19); Wazuh not started |
 | 5 | Metasploit lab | Domain 6 — Security Assessment & Testing | Not started (decision made: Framework over Pro) |

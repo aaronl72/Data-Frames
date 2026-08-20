@@ -3,11 +3,11 @@
 | | |
 |---|---|
 | **Document owner** | Aaron — System Administrator role (per [Information Security Policy](../docs/governance/information-security-policy.md) §4) |
-| **Version** | 0.1 — **DRAFT, decisions pending** |
+| **Version** | 1.0 — decisions accepted |
 | **Date** | 2026-08-20 |
 | **CISSP domain mapping** | Domain 3 — Security Architecture & Engineering, **and Domain 4 — Communication & Network Security** |
 | **Depends on** | [Risk Register](../docs/governance/risk-register.md) R-02, R-03, R-07, R-08; [BCP/DRP](../docs/governance/bcp-drp.md) §3, §5.3, §8; [Policy](../docs/governance/information-security-policy.md) §6, §7 |
-| **Status** | Design only. **No Azure resources provisioned yet** — §5 decisions must be ruled on first. |
+| **Status** | **All four §5 decisions accepted as recommended, 2026-08-20.** Implementation in [`bicep/`](bicep/). **No Azure resources provisioned yet** — the templates are written and reviewable but have not been deployed. |
 
 ## 1. Purpose and Scope
 
@@ -90,13 +90,13 @@ Non-overlapping ranges, deliberately, **even though the VNets are never peered.*
 
 Second-octet separation (10.**10** vs 10.**20**) makes the boundary visible in any log line, rule, or alert at a glance — a small operational affordance that pays off during an incident.
 
-## 5. Decisions Required
+## 5. Decisions
 
-These four need a ruling before anything is provisioned. Each carries a recommendation; the reasoning is shown so it can be overruled on grounds not visible here.
+**All four accepted as recommended on 2026-08-20.** The reasoning is retained below rather than trimmed — a decision record that keeps only the outcome cannot be re-examined later when the constraints that produced it (pre-revenue, solo operator, no client data) change. Each decision names the condition that should trigger revisiting it.
 
 ---
 
-### D-01 — How honeypot data reaches Wazuh without creating a pivot path
+### D-01 — How honeypot data reaches Wazuh without creating a pivot path — ✅ ACCEPTED (Option B)
 
 **The conflict.** Two Phase 1 commitments point in opposite directions:
 
@@ -125,7 +125,7 @@ This also satisfies the honeypot's "Continuous" RPO in BCP §2 — the intellige
 
 ---
 
-### D-02 — Egress control (two separate problems)
+### D-02 — Egress control (two separate problems) — ✅ ACCEPTED (Option B, both)
 
 #### D-02a — Honeypot egress
 
@@ -155,7 +155,7 @@ This converts R-03 from an administrative control into a **technical** one. A mi
 
 ---
 
-### D-03 — Administrative access
+### D-03 — Administrative access — ✅ ACCEPTED (Bastion Developer SKU)
 
 Principle 4 rules out public IPs for management. What replaces them:
 
@@ -185,7 +185,7 @@ Upgrade path: Developer → Basic/Standard/Premium requires creating an `AzureBa
 
 ---
 
-### D-04 — Backup, snapshots, and the honeypot's golden image
+### D-04 — Backup, snapshots, and the honeypot's golden image — ✅ ACCEPTED
 
 BCP §3 commits to "daily automated snapshot once built." BCP §5.3 separately commits to rebuilding the honeypot "from a clean image." **These are different mechanisms, and the distinction matters.**
 
@@ -262,7 +262,7 @@ Compute dominates everything else combined. The levers: right-sized burstable (B
 
 ## 12. Build Order
 
-Once §5 is ruled on. Each step is verifiable before the next depends on it:
+Each step is verifiable before the next depends on it. **Steps 1–2 are implemented as Bicep templates in [`bicep/`](bicep/)** and are free to deploy (VNets, subnets, and NSGs carry no charge); everything from step 3 on is not yet written.
 
 1. Resource groups + both VNets/subnets per §4 — **no VMs**
 2. NSGs per §6, default-deny first, then open only what a specific step needs
@@ -277,7 +277,20 @@ Once §5 is ruled on. Each step is verifiable before the next depends on it:
 
 Step 9 is not optional. It is the test that proves R-02 and D-02a are real rather than intended.
 
-## 13. CISSP Reinforcement — Domains 3 & 4
+## 13. Revisit Conditions
+
+A decision record is only useful if it says when to reopen it. Each of these should force a re-examination rather than waiting for the annual review:
+
+| Trigger | Revisit |
+|---|---|
+| Any client data touches this infrastructure | **D-03** — Microsoft states Developer SKU is not suitable for production; also re-examine D-02a |
+| Revenue justifies recurring spend | **D-02a/D-02b** — Azure Firewall with FQDN filtering and threat intel replaces NSG allowlists |
+| A second person needs simultaneous VM access | **D-03** — Developer SKU allows one connection at a time |
+| Default-deny lab egress goes live | **R-03** — re-score likelihood in the risk register (currently deferred, not assumed) |
+| Honeypot log volume grows materially | **D-01** — storage cost and Wazuh pull cadence |
+| A honeypot compromise actually occurs | **D-04 and BCP §5.3** — test whether golden-image rebuild worked as designed |
+
+## 14. CISSP Reinforcement — Domains 3 & 4
 
 Scenario-style framings drawn from actual decisions in this document, since scenario parsing is the identified gap:
 
