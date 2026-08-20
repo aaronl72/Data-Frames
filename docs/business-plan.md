@@ -41,14 +41,14 @@ Based on Canadian MSSP market research (from earlier planning).
 
 ## Build sequence
 
-All 8 phases are **not started** in this repo — prior work (a draft website, two governance docs) only ever existed as artifacts inside a Claude Desktop conversation and needs to be rebuilt here.
+Prior work (a draft website, two governance docs) only ever existed as artifacts inside a Claude Desktop conversation and had to be rebuilt here from scratch.
 
 | # | Phase | CISSP Domain | Status |
 |---|---|---|---|
-| 1 | Governance | Domain 1 — Security & Risk Management | Not started |
+| 1 | Governance | Domain 1 — Security & Risk Management | Markdown deliverables complete 2026-08-19 (Info Security Policy, Risk Register, BCP/DRP) — branded `.docx` exports still pending |
 | 2 | Network architecture | Domain 3 — Security Architecture & Engineering | Not started |
 | 3 | IAM | Domain 5 — Identity & Access Management | Not started |
-| 4 | Wazuh + website | Domain 7 — Security Operations (partly) | Not started |
+| 4 | Wazuh + website | Domain 7 — Security Operations (partly) | Website done (redesigned + branded 2026-08-19); Wazuh not started |
 | 5 | Metasploit lab | Domain 6 — Security Assessment & Testing | Not started (decision made: Framework over Pro) |
 | 6 | Shuffle SOAR | Domain 7 — Security Operations | Not started |
 | 7 | Honeypot go-live | Domain 7 — Security Operations | Not started |

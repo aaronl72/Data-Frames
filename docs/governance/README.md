@@ -2,8 +2,9 @@
 
 CISSP Domain 1 (Security & Risk Management) deliverables for Data-Frames.
 
-Planned:
-- `information-security-policy.md` (+ exported `.docx`)
-- `bcp-drp.md` (+ exported `.docx`) — Business Continuity and Disaster Recovery Plan
+- [x] [`information-security-policy.md`](information-security-policy.md) — drafted 2026-08-19
+- [x] [`risk-register.md`](risk-register.md) — drafted 2026-08-19
+- [x] [`bcp-drp.md`](bcp-drp.md) — drafted 2026-08-19
+- [ ] Branded `.docx` exports of the above, once a Data-Frames letterhead template exists
 
-Not yet built — see [../business-plan.md](../business-plan.md) for the phase this belongs to.
+See [../business-plan.md](../business-plan.md) for the phase this belongs to.
