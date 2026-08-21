@@ -3,11 +3,11 @@
 | | |
 |---|---|
 | **Document owner** | Aaron — System Administrator role (per [Information Security Policy](../docs/governance/information-security-policy.md) §4) |
-| **Version** | 1.0 — decisions accepted |
+| **Version** | 1.1 — D-05 added, D-01 amended |
 | **Date** | 2026-08-20 |
 | **CISSP domain mapping** | Domain 3 — Security Architecture & Engineering, **and Domain 4 — Communication & Network Security** |
 | **Depends on** | [Risk Register](../docs/governance/risk-register.md) R-02, R-03, R-07, R-08; [BCP/DRP](../docs/governance/bcp-drp.md) §3, §5.3, §8; [Policy](../docs/governance/information-security-policy.md) §6, §7 |
-| **Status** | **All four §5 decisions accepted as recommended, 2026-08-20.** Implementation in [`bicep/`](bicep/). **No Azure resources provisioned yet** — the templates are written and reviewable but have not been deployed. |
+| **Status** | **All five §5 decisions accepted, 2026-08-20 (D-05 added).** Implementation in [`bicep/`](bicep/). **No Azure resources provisioned yet** — the templates are written and reviewable but have not been deployed. |
 
 ## 1. Purpose and Scope
 
@@ -67,6 +67,8 @@ graph TB
 
 The single most important property: **there is no line between the two VNets.** The honeypot's data reaches Wazuh by writing into a storage account that Wazuh separately reads from. Neither VNet can route to the other, and neither holds a credential that works in the other.
 
+> **This diagram is the target state.** Per **D-05**, Wazuh, Shuffle, Metasploit and the targets run on local Hyper-V during the learning phase, and only the honeypot and airlock are in Azure. The one-way property is unchanged — Wazuh still pulls, the honeypot still never initiates — but the pull crosses the public internet rather than a service endpoint until the lift happens. See D-05 for what that forces.
+
 ## 4. Address Plan
 
 Non-overlapping ranges, deliberately, **even though the VNets are never peered.** Overlapping space would foreclose future options that cost nothing to preserve: a forensic jump host, a temporary VPN, or an offline analysis copy of honeypot data.
@@ -92,7 +94,7 @@ Second-octet separation (10.**10** vs 10.**20**) makes the boundary visible in a
 
 ## 5. Decisions
 
-**All four accepted as recommended on 2026-08-20.** The reasoning is retained below rather than trimmed — a decision record that keeps only the outcome cannot be re-examined later when the constraints that produced it (pre-revenue, solo operator, no client data) change. Each decision names the condition that should trigger revisiting it.
+**All five accepted on 2026-08-20.** D-01 to D-04 were accepted as recommended; **D-05 was added afterwards** and partially reverses the assumption underlying the others — that everything runs in Azure. Read D-05 before implementing D-01. The reasoning is retained below rather than trimmed — a decision record that keeps only the outcome cannot be re-examined later when the constraints that produced it (pre-revenue, solo operator, no client data) change. Each decision names the condition that should trigger revisiting it.
 
 ---
 
@@ -200,6 +202,47 @@ BCP §3 commits to "daily automated snapshot once built." BCP §5.3 separately c
 **The honeypot must not be backed up, and that is a security decision rather than a cost one.** A honeypot is a machine you expect to be compromised. A daily snapshot of it is a daily snapshot of an attacker's foothold — and restoring one restores the compromise. BCP §5.3 already prescribes the correct response: *rebuild from a clean image.* Its data is protected by D-01's continuous forwarding, not by snapshots. This is precisely why its RPO reads "Continuous" while its RTO is the most relaxed of any system.
 
 **Recommendation:** Azure Backup with a daily policy and 7-day retention for Wazuh and Shuffle only; captured golden images for the lab and honeypot; auto-shutdown schedules on lab VMs (free, and the single largest lever on monthly compute cost).
+
+---
+
+### D-05 — Where each component actually runs — ✅ ACCEPTED 2026-08-20
+
+D-01 to D-04 were designed assuming everything runs in Azure. That assumption is now explicit rather than implicit, and it is **partially reversed for the learning phase**.
+
+| Component | Runs where | Monthly |
+|---|---|---|
+| Honeypot + airlock | **Azure**, continuously from day one | ~$20 |
+| Wazuh, Shuffle, Metasploit, targets | **Local**, Hyper-V on the admin workstation | $0 |
+| `data-frames.com` | GitHub Pages, unchanged | $0 |
+
+**Why the honeypot goes first and stays in Azure.** It cannot be learned locally in any meaningful sense — a honeypot nothing attacks is just software — and it needs a public IPv4 address, which is unavailable at home for the reasons already recorded in the business plan. More importantly it is **the only component whose cost of delay is irreversible**: its value accrues in wall-clock time. Deferring it three months does not save $60, it costs a demo that cannot exist for three months. It is deployed before Wazuh is ready to consume it, because the airlock accumulates immutably and Wazuh backfills.
+
+**Why Wazuh and Shuffle start local, and it is not primarily the money.** The saving is real (~$100/month), but the operative reason is **iteration speed**. Learning a SIEM is an exercise in breaking it: malformed rule syntax, a decoder that swallows everything, an indexer that will not start. On Hyper-V that is a checkpoint revert in thirty seconds. In Azure it is slower and billed, and the hesitation that produces is a worse cost than the hosting. Free trial credit does not fix this — the meter is not the problem, the rebuild time is.
+
+**They move together or not at all.** Shuffle is triggered *by* Wazuh, so a local Wazuh that is powered off leaves an Azure Shuffle idle regardless of where it sits. Wiring the honeypot to trigger Shuffle directly would work around that and is rejected: it would have the honeypot initiating a connection toward the lab side, which is precisely what D-01 and R-02 exist to prevent.
+
+**The tradeoff, stated rather than buried.** Detection survives a powered-off workstation; **automated response does not**. No data is lost — the airlock accumulates and Wazuh backfills — but Shuffle is not running at the moment an overnight attack occurs, so the response cannot be demonstrated with honest timestamps. That is a *demo* gap rather than a data gap, and it costs nothing until there is an audience.
+
+#### What D-05 forces on D-01
+
+The airlock design assumed Wazuh sat inside the lab VNet and reached storage over a service endpoint. It does not, yet. Three consequences, all implemented in [`bicep/modules/storage-airlock.bicep`](bicep/modules/storage-airlock.bicep):
+
+1. **Wazuh needs two virtual NICs** — one host-only facing the lab, one external restricted to Azure Storage. Every other VM stays host-only with no route out. This is a real hole in otherwise complete isolation, sitting on the same virtual switch as deliberately vulnerable targets, and it must be kept narrow.
+2. **The storage account cannot have public network access fully disabled** while the read side is a residential connection. It runs `defaultAction: Deny` with two exceptions: the honeypot subnet's service endpoint, and one IP rule for the lab's egress address. That IP is dynamic, so the rule goes stale without warning — an availability nuisance, not a security hole, since an attacker reaching the endpoint still faces the RBAC check. The rule is deleted when Wazuh moves into the VNet.
+3. **D-02b strengthens.** A host-only virtual switch has no route to the internet at all, which is a harder guarantee than an NSG rule that could be mis-ordered. R-03's likelihood should be reassessed downward at the next register review, not upward.
+
+#### Amendment to D-01 — managed identity replaces the SAS
+
+D-01 specified "a short-lived, auto-rotated SAS scoped to append/create on one container." That is superseded by something stronger:
+
+- `allowSharedKeyAccess: false` on the storage account, so the account key does not work and neither does any SAS signed with it. **Every caller must authenticate as an Entra identity and pass an RBAC check.**
+- The honeypot VM uses a **system-assigned managed identity** holding a **custom append-only role** (`blobs/add/action` and `blobs/write/action`, nothing else). Azure's narrowest built-in role, Storage Blob Data Contributor, still grants read and delete — which would hand a compromised honeypot the ability to read back and destroy the evidence it was capturing.
+
+This is better than the original on three counts: **no credential is written to disk** on the machine expected to be compromised; **nothing needs rotating**, which removes the operational failure mode D-01 was working around; and **revocation is instant** — remove the role assignment.
+
+Blob versioning plus an unlocked time-based immutability policy (90 days, `allowProtectedAppendWrites: true`) means new evidence can always be added and existing evidence cannot be altered or deleted, including by whoever holds the honeypot's identity.
+
+**Revisit condition:** prospect meetings booked. At that point Wazuh and Shuffle lift into the lab VNet — already deployed and empty since day one — from configuration already version-controlled in this repo. Estimated ~$150/month at that point.
 
 ---
 

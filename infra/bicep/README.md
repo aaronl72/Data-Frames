@@ -15,7 +15,11 @@ Implements **steps 1–2** of the build order in [`../network-architecture.md`](
 
 **The entire deployment is free.** VNets, subnets, NSGs, and service endpoints carry no charge — cost begins with VMs (§11). That is why the network foundation is a safe first step: it can be deployed, inspected, verified, and torn down without spending anything.
 
-Not included, and deliberately so: no VMs, no Bastion, no storage account, no public IPs, and **no VNet peering** (R-02).
+Also included since v1.1: the **storage airlock** (`modules/storage-airlock.bicep`) and the **custom append-only role** that constrains what the honeypot can do to it — decision D-01, as amended by D-05.
+
+Not included, and deliberately so: no VMs, no Bastion, no public IPs, and **no VNet peering** (R-02). Compute is built by hand the first time and templated afterwards, once its real requirements are known rather than guessed.
+
+Everything here is free except the storage account, which bills only for what it holds — pennies at honeypot log volumes. The whole template can therefore be deployed long before any VM exists, which is exactly what the build plan does.
 
 ## Why Bicep rather than az CLI scripts
 

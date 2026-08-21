@@ -188,3 +188,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
 output vnetId string = vnet.id
 output vnetName string = vnet.name
 output addressSpace string = addressSpace
+
+@description('Resource ID of snet-honeypot. Consumed by storage-airlock.bicep to allow writes from this subnet and nowhere else (decision D-01).')
+output honeypotSubnetId string = '${vnet.id}/subnets/snet-honeypot'
