@@ -1,0 +1,1021 @@
+<title>Two VNets, No Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ---- Light palette: complete, on bare :root ---- */
+  :root {
+    --ink:        #16211c;
+    --ink-soft:   #3d4a44;
+    --ink-faint:  #6b7873;
+    --paper:      #f7f8f7;
+    --panel:      #ffffff;
+    --plate:      #eef1ef;
+    --plate-bar:  #e2e7e4;
+    --plate-rule: #cfd6d2;
+    --rule:       #d8ded9;
+    --rule-soft:  #e7ebe8;
+
+    --teal:       #0f6b5c;
+    --teal-soft:  #e2efec;
+
+    --allow:      #2e764d;
+    --allow-bg:   #e4f0e8;
+    --deny:       #8f3a2e;
+    --deny-bg:    #f6e6e3;
+    --design:     #8f600c;
+    --design-bg:  #f7ecd8;
+
+    --shadow:     0 1px 2px rgba(22,33,28,.06), 0 8px 24px rgba(22,33,28,.05);
+
+    --f-display:  'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --f-body:     'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --f-mono:     'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+    --measure:    68ch;
+    --wide:       1180px;
+  }
+
+  /* ---- Dark tokens: system-dark, un-stamped ---- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink:        #e6ece9;
+      --ink-soft:   #a9b6b0;
+      --ink-faint:  #7d8b85;
+      --paper:      #0e1512;
+      --panel:      #141d19;
+      --plate:      #101815;
+      --plate-bar:  #182420;
+      --plate-rule: #26332d;
+      --rule:       #26332d;
+      --rule-soft:  #1d2823;
+
+      --teal:       #3fc9b0;
+      --teal-soft:  #12302a;
+
+      --allow:      #6bc38f;
+      --allow-bg:   #16301f;
+      --deny:       #e08a78;
+      --deny-bg:    #331914;
+      --design:     #d9a441;
+      --design-bg:  #302410;
+
+      --shadow:     0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+    }
+  }
+
+  /* ---- Dark tokens: explicit toggle ---- */
+  :root[data-theme="dark"] {
+    --ink:        #e6ece9;
+    --ink-soft:   #a9b6b0;
+    --ink-faint:  #7d8b85;
+    --paper:      #0e1512;
+    --panel:      #141d19;
+    --plate:      #101815;
+    --plate-bar:  #182420;
+    --plate-rule: #26332d;
+    --rule:       #26332d;
+    --rule-soft:  #1d2823;
+
+    --teal:       #3fc9b0;
+    --teal-soft:  #12302a;
+
+    --allow:      #6bc38f;
+    --allow-bg:   #16301f;
+    --deny:       #e08a78;
+    --deny-bg:    #331914;
+    --design:     #d9a441;
+    --design-bg:  #302410;
+
+    --shadow:     0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.62;
+    margin: 0;
+    padding: 0 24px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; }
+  .col  { max-width: var(--measure); }
+
+  /* ---------- Masthead ---------- */
+  header.mast {
+    padding: 72px 0 40px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .eyebrow .tick { color: var(--ink-faint); }
+
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 3.9rem);
+    line-height: 1.02;
+    letter-spacing: -.025em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+    max-width: 15ch;
+  }
+  .standfirst {
+    font-size: 1.14rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 36px;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .meta div { background: var(--paper); padding: 14px 16px; }
+  .meta dt {
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 5px;
+  }
+  .meta dd {
+    margin: 0;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  /* ---------- Sections ---------- */
+  section { margin: 0 0 64px; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 0 0 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sec-num {
+    font-family: var(--f-mono);
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: .06em;
+    flex: none;
+  }
+  h2 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.42rem;
+    letter-spacing: -.012em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .sec-sub {
+    font-size: .92rem;
+    color: var(--ink-faint);
+    margin: 0 0 26px;
+    max-width: var(--measure);
+  }
+
+  h3 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.03rem;
+    letter-spacing: -.005em;
+    margin: 34px 0 10px;
+  }
+
+  p { margin: 0 0 16px; max-width: var(--measure); }
+  strong { font-weight: 600; }
+  code {
+    font-family: var(--f-mono);
+    font-size: .855em;
+    background: var(--teal-soft);
+    color: var(--teal);
+    padding: .12em .38em;
+    border-radius: 2px;
+  }
+
+  /* ---------- Thesis pull ---------- */
+  .thesis {
+    border-left: 3px solid var(--teal);
+    background: var(--teal-soft);
+    padding: 22px 26px;
+    margin: 0 0 52px;
+    max-width: var(--measure);
+  }
+  .thesis p {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 1.16rem;
+    line-height: 1.42;
+    color: var(--ink);
+  }
+  .thesis .attrib {
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-top: 12px;
+  }
+
+  /* ---------- Diagram plates ---------- */
+  figure.plate {
+    margin: 26px 0 12px;
+    background: var(--plate);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .plate-bar {
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: var(--plate-bar);
+    border-bottom: 1px solid var(--plate-rule);
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .plate-body { overflow-x: auto; padding: 26px 18px; }
+
+  /* ---------- Flow diagrams (hand-authored, token-driven) ---------- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    max-width: 620px;
+    margin: 0 auto;
+    min-width: 300px;
+  }
+  .zone {
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: var(--panel);
+    padding: 13px 15px;
+  }
+  .zone.exposed { border-color: var(--design); }
+  .zone.private { border-color: var(--teal); }
+  .zone.open    { border-style: dashed; background: transparent; }
+  .zone-label {
+    font-family: var(--f-mono);
+    font-size: .65rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .zone.exposed .zone-label { color: var(--design); }
+  .zone.private .zone-label { color: var(--teal); }
+  .nodes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .node {
+    flex: 1 1 150px;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--paper);
+    padding: 9px 11px;
+    font-size: .85rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .node .addr {
+    display: block;
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: .72rem;
+    font-weight: 400;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+  .node.store {
+    background: var(--teal-soft);
+    border-color: var(--teal);
+    text-align: center;
+    flex-basis: 100%;
+  }
+
+  .conn { display: flex; flex-direction: column; align-items: center; padding: 3px 0; }
+  .conn .lbl {
+    font-family: var(--f-mono);
+    font-size: .67rem;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 3px 6px;
+    max-width: 34ch;
+  }
+  .conn .line { width: 2px; height: 15px; background: var(--ink-faint); }
+  .conn .head {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+  }
+  .conn.down .head { border-top: 7px solid var(--ink-faint); }
+  .conn.up   .head { border-bottom: 7px solid var(--ink-faint); }
+  .conn.key .line { background: var(--teal); }
+  .conn.key.up .head { border-bottom-color: var(--teal); }
+  .conn.key.down .head { border-top-color: var(--teal); }
+  .conn.key .lbl { color: var(--teal); font-weight: 600; }
+
+  .cannot {
+    margin-top: 14px;
+    border: 1px dashed var(--deny);
+    background: var(--deny-bg);
+    border-radius: 3px;
+    padding: 11px 14px;
+  }
+  .cannot-h {
+    font-family: var(--f-mono);
+    font-size: .65rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--deny);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .cannot ul { margin: 0; padding-left: 18px; }
+  .cannot li { font-size: .85rem; color: var(--ink-soft); margin-bottom: 4px; }
+  .cannot li:last-child { margin-bottom: 0; }
+
+  /* ---------- Physical facilities ---------- */
+  .sites { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
+  .site { border:1.5px solid var(--rule); border-radius:3px; background:var(--panel); display:flex; flex-direction:column; }
+  .site.yours { border-color:var(--teal); }
+  .site.msft  { border-color:var(--design); }
+  .site-top { padding:13px 15px 11px; border-bottom:1px solid var(--rule-soft); }
+  .site-where { font-family:var(--f-mono); font-size:.64rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:5px; }
+  .site.yours .site-where { color:var(--teal); }
+  .site.msft  .site-where { color:var(--design); }
+  .site h4 { font-family:var(--f-display); font-weight:600; font-size:.98rem; margin:0; }
+  .site-body { padding:12px 15px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .kit { border:1px solid var(--rule); border-radius:2px; background:var(--paper); padding:8px 10px; font-size:.83rem; font-weight:500; line-height:1.35; }
+  .kit span { display:block; font-family:var(--f-mono); font-size:.69rem; font-weight:400; color:var(--ink-faint); margin-top:3px; }
+  .site-foot { padding:10px 15px; border-top:1px solid var(--rule-soft); font-size:.78rem; color:var(--ink-faint); }
+
+  .link-band {
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    margin:14px 0; padding:9px 14px;
+    border:1px dashed var(--rule); border-radius:3px;
+    font-family:var(--f-mono); font-size:.68rem; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--ink-faint); text-align:center;
+  }
+
+  .boundary {
+    border:1px solid var(--design); background:var(--design-bg);
+    border-radius:3px; padding:17px 20px; margin-top:20px; max-width:var(--measure);
+  }
+  .boundary h4 { font-family:var(--f-display); font-size:.98rem; margin:0 0 7px; color:var(--design); }
+  .boundary p { font-size:.9rem; color:var(--ink-soft); margin:0; max-width:none; }
+
+  .port {
+    font-family:var(--f-mono); font-size:.63rem; font-weight:600;
+    letter-spacing:.05em; color:var(--ink-faint);
+    border:1px solid var(--rule); border-radius:2px;
+    padding:1px 5px; margin-left:5px; white-space:nowrap;
+  }
+  figcaption {
+    font-size: .86rem;
+    color: var(--ink-faint);
+    margin: 10px 2px 0;
+    max-width: var(--measure);
+  }
+
+  /* ---------- Tables ---------- */
+  .t-scroll { overflow-x: auto; margin: 18px 0 8px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+    font-size: .89rem;
+  }
+  caption {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 9px;
+  }
+  th {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-weight: 600;
+    font-size: .7rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom: 1.5px solid var(--rule);
+    padding: 0 14px 8px 0;
+    vertical-align: bottom;
+  }
+  td {
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 11px 14px 11px 0;
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  td:first-child { color: var(--ink); font-weight: 500; }
+  tbody tr:last-child td { border-bottom: none; }
+  .mono, td.mono, .cidr {
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: .86em;
+  }
+
+  /* ---------- Chips ---------- */
+  .chip {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: .66rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .chip.allow  { background: var(--allow-bg);  color: var(--allow); }
+  .chip.deny   { background: var(--deny-bg);   color: var(--deny); }
+  .chip.design { background: var(--design-bg); color: var(--design); }
+  .chip.hold   { background: var(--teal-soft); color: var(--teal); }
+
+  /* ---------- Decision cards ---------- */
+  .decisions { display: grid; gap: 18px; }
+  .dec {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--teal);
+    border-radius: 3px;
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+  }
+  .dec-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .dec-id {
+    font-family: var(--f-mono);
+    font-weight: 600;
+    font-size: .8rem;
+    color: var(--teal);
+    letter-spacing: .04em;
+  }
+  .dec h3 { margin: 0; font-size: 1.02rem; flex: 1 1 240px; }
+  .dec p { margin: 10px 0 0; font-size: .93rem; color: var(--ink-soft); max-width: none; }
+  .dec .verdict {
+    margin-top: 14px;
+    padding-top: 13px;
+    border-top: 1px solid var(--rule-soft);
+    font-size: .88rem;
+  }
+  .dec .verdict b {
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  /* ---------- Status footer ---------- */
+  .status {
+    border: 1px solid var(--design);
+    background: var(--design-bg);
+    border-radius: 3px;
+    padding: 20px 24px;
+    max-width: var(--measure);
+  }
+  .status h3 { margin: 0 0 8px; color: var(--design); font-size: 1rem; }
+  .status p { color: var(--ink-soft); margin: 0; font-size: .93rem; }
+
+  footer.foot {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+  }
+
+  ul.tight { margin: 0 0 16px; padding-left: 20px; max-width: var(--measure); }
+  ul.tight li { margin-bottom: 7px; }
+
+  a { color: var(--teal); }
+  a:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 0 18px 64px; }
+    header.mast { padding: 44px 0 30px; }
+    .plate-body { padding: 16px 10px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">
+      <span>Data-Frames</span><span class="tick">/</span>
+      <span>Phase 2</span><span class="tick">/</span>
+      <span>Network Architecture</span>
+    </p>
+    <h1>Two VNets, No Bridge</h1>
+    <p class="standfirst">
+      The Azure network layer beneath the Wazuh manager, the Metasploit lab, Shuffle,
+      and the <code>network-packets.com</code> honeypot — designed on paper before a
+      single resource was provisioned, because address space and trust boundaries are
+      far cheaper to settle in a document than to unpick in a running lab.
+    </p>
+
+    <dl class="meta">
+      <div><dt>Version</dt><dd>1.0 — decisions accepted</dd></div>
+      <div><dt>Date</dt><dd>20 August 2026</dd></div>
+      <div><dt>Region</dt><dd>Canada Central</dd></div>
+      <div><dt>CISSP domains</dt><dd>3 — Security Architecture<br>4 — Network Security</dd></div>
+      <div><dt>Provisioned</dt><dd>Nothing yet — templates written, not deployed</dd></div>
+    </dl>
+  </header>
+
+  <div class="thesis">
+    <p>There is no line between the two VNets. The honeypot's data reaches Wazuh by
+      writing into a storage account that Wazuh separately reads from. Neither VNet can
+      route to the other, and neither holds a credential that works in the other.</p>
+    <p class="attrib">The single most important property</p>
+  </div>
+
+  <!-- ================= TOPOLOGY ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§3</span><h2>Topology — logical</h2></div>
+    <p class="sec-sub">How traffic is permitted to move: address spaces, trust zones, and the direction each flow is allowed to be initiated in. This is the layer you actually control.</p>
+
+    <figure class="plate">
+      <div class="plate-bar"><span>Plate 01 — Logical topology</span><span>zones, address space, flow direction</span></div>
+      <div class="plate-body">
+<div class="flow">
+
+  <div class="zone open">
+    <div class="zone-label"><span>Zone 0 — Internet</span><span>untrusted</span></div>
+    <div class="nodes">
+      <div class="node">Attackers &amp; scanners</div>
+      <div class="node">Admin workstation<span class="addr">reaches both VNets via Bastion</span></div>
+    </div>
+  </div>
+
+  <div class="conn down">
+    <div class="lbl">inbound — the intended function <span class="port">22 · 23 · 445</span></div>
+    <div class="line"></div><div class="head"></div>
+  </div>
+
+  <div class="zone exposed">
+    <div class="zone-label"><span>Zone 1 — vnet-df-honeypot</span><span>10.20.0.0/16 · sacrificial</span></div>
+    <div class="nodes">
+      <div class="node">T-Pot / Cowrie<span class="addr">10.20.1.0/24 · public IP by design</span></div>
+    </div>
+  </div>
+
+  <div class="conn down">
+    <div class="lbl">append only — no read, list or delete <span class="port">443</span></div>
+    <div class="line"></div><div class="head"></div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-label"><span>Zone 2 — Storage account</span><span>the airlock</span></div>
+    <div class="nodes">
+      <div class="node store">Blob container<span class="addr">immutable · versioned · no public network access</span></div>
+    </div>
+  </div>
+
+  <div class="conn key up">
+    <div class="head"></div><div class="line"></div>
+    <div class="lbl">Wazuh pulls on a schedule — the lab initiates, the honeypot never does <span class="port">443</span></div>
+  </div>
+
+  <div class="zone private">
+    <div class="zone-label"><span>Zone 3 — vnet-df-lab</span><span>10.10.0.0/16 · trusted</span></div>
+    <div class="nodes">
+      <div class="node">Wazuh manager<span class="addr">10.10.1.0/24 · listens 1514/1515</span></div>
+      <div class="node">Metasploit + targets<span class="addr">10.10.2.0/24 · no egress</span></div>
+      <div class="node">Shuffle SOAR<span class="addr">10.10.3.0/24</span></div>
+    </div>
+  </div>
+
+</div>
+      </div>
+    </figure>
+    <figcaption>Four trust zones, and no adjacency between Zone 1 and Zone 3. The arrow into the
+      storage account comes from the Wazuh side because Wazuh <em>pulls</em> — the honeypot never
+      reaches toward the lab. Direction of initiation is the control.</figcaption>
+  </section>
+
+  <!-- ================= PHYSICAL ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§3b</span><h2>Topology — physical</h2></div>
+    <p class="sec-sub">Where the actual machines are, and who owns the ones you don't. In IaaS this diverges sharply from the logical view — most of the physical layer is not yours to draw.</p>
+
+    <figure class="plate">
+      <div class="plate-bar"><span>Plate 02 — Physical topology</span><span>facilities and ownership</span></div>
+      <div class="plate-body">
+
+        <div class="sites">
+
+          <div class="site yours">
+            <div class="site-top">
+              <div class="site-where">Your premises</div>
+              <h4>Home office</h4>
+            </div>
+            <div class="site-body">
+              <div class="kit">ThinkPad P1 Gen 3<span>i9-10885H · 8C/16T · 32 GB · 338 GB free</span></div>
+              <div class="kit">Residential ISP circuit<span>dynamic public address</span></div>
+              <div class="kit">Hyper-V host-only switch<span>if the lab runs locally</span></div>
+            </div>
+            <div class="site-foot">The only hardware you physically possess or can touch.</div>
+          </div>
+
+          <div class="site msft">
+            <div class="site-top">
+              <div class="site-where">Microsoft · Canada Central</div>
+              <h4>Azure region</h4>
+            </div>
+            <div class="site-body">
+              <div class="kit">Honeypot VM<span>one static public IPv4 · the only inbound address</span></div>
+              <div class="kit">Lab VMs<span>no public addresses at all</span></div>
+              <div class="kit">Storage account<span>the airlock, replicated within the region</span></div>
+              <div class="kit">Bastion Developer<span>shared service, not a dedicated host</span></div>
+            </div>
+            <div class="site-foot">Toronto-area datacentres. You choose the region; nothing below it.</div>
+          </div>
+
+          <div class="site">
+            <div class="site-top">
+              <div class="site-where">Third-party edge</div>
+              <h4>Services you point at</h4>
+            </div>
+            <div class="site-body">
+              <div class="kit">GitHub CDN<span>185.199.108–111.153 · anycast, many locations</span></div>
+              <div class="kit">GoDaddy nameservers<span>authoritative DNS for both domains</span></div>
+              <div class="kit">Exchange Online<span>mail for data-frames.com</span></div>
+            </div>
+            <div class="site-foot">Shared infrastructure. No dedicated hardware anywhere in this column.</div>
+          </div>
+
+        </div>
+
+        <div class="link-band">All three connected only by the public internet — no private circuit, no VPN, no peering</div>
+
+      </div>
+    </figure>
+
+    <div class="boundary">
+      <h4>Where the diagram stops</h4>
+      <p>You cannot draw a true physical topology for the middle column. Which rack, which host,
+        which top-of-rack switch, which fibre path — none of it is exposed, and your VM may be
+        live-migrated to different hardware without notice. <strong>Region is the smallest physical
+        unit you actually control.</strong> That is the shared-responsibility boundary made visible:
+        Microsoft owns physical and infrastructure security, you own everything from the virtual
+        network upward.</p>
+    </div>
+
+    <h3>Why the two views disagree</h3>
+    <div class="t-scroll">
+      <table>
+        <caption>Same system, two readings</caption>
+        <thead><tr><th style="width:22%">Question</th><th style="width:39%">Logical answer</th><th>Physical answer</th></tr></thead>
+        <tbody>
+          <tr><td>Are the two VNets connected?</td><td><strong>No.</strong> No peering, no route, no shared identity</td><td><strong>Yes.</strong> Very likely the same datacentre, possibly the same physical host</td></tr>
+          <tr><td>How many public addresses?</td><td>One — the honeypot, deliberately</td><td>One static IPv4, plus whatever Microsoft uses for platform egress</td></tr>
+          <tr><td>Where does the website live?</td><td>One hostname, one origin</td><td>Anycast — served from whichever GitHub edge is nearest the visitor</td></tr>
+          <tr><td>Is the lab isolated?</td><td>Yes — default-deny egress, no inbound</td><td>It is a guest on shared hardware with other tenants</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The first row is the one that matters. <strong>Logical separation is the entire control</strong> —
+      R-02 is enforced by the absence of a route, not by distance. Two machines can sit inches apart
+      and still have no path between them, which is exactly the situation here.</p>
+  </section>
+
+  <!-- ================= AIRLOCK ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">D-01</span><h2>The airlock, and the conflict it resolves</h2></div>
+    <p class="sec-sub">Two Phase 1 commitments pointed in opposite directions. Reconciling them produced the defining feature of this architecture.</p>
+
+    <p>The business continuity plan required honeypot data to be <strong>forwarded continuously
+      to a store outside the honeypot VNet</strong>. Risk R-02 and Policy §6 required that
+      <strong>no routine credential, account, or trust relationship</strong> be shared between
+      the honeypot VNet and the private lab. Continuous forwarding from honeypot to Wazuh
+      <em>is</em> a path between the two VNets.</p>
+
+    <p>The resolution was hiding in the BCP's own parenthetical, which contained both the
+      problem and the answer: <em>"the Wazuh manager, or a separate storage account."</em></p>
+
+    <figure class="plate">
+      <div class="plate-bar"><span>Plate 03 — Credential blast radius under full honeypot compromise</span><span>D-01</span></div>
+      <div class="plate-body">
+<div class="flow">
+
+  <div class="zone exposed">
+    <div class="zone-label"><span>Worst case</span><span>assume total loss</span></div>
+    <div class="nodes">
+      <div class="node">Attacker holds full root on the honeypot<span class="addr">every file, every process, every credential on the box</span></div>
+    </div>
+  </div>
+
+  <div class="conn down">
+    <div class="lbl">so they hold</div>
+    <div class="line"></div><div class="head"></div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-label"><span>The only credential present</span></div>
+    <div class="nodes">
+      <div class="node">Short-lived SAS token<span class="addr">append + create · one container · auto-rotated</span></div>
+    </div>
+  </div>
+
+  <div class="conn down">
+    <div class="lbl">whose entire capability is</div>
+    <div class="line"></div><div class="head"></div>
+  </div>
+
+  <div class="zone">
+    <div class="zone-label"><span>Blob container</span></div>
+    <div class="nodes">
+      <div class="node store">Append a blob<span class="addr">immutable + versioned, so prior captures cannot be destroyed</span></div>
+    </div>
+  </div>
+
+  <div class="conn key up">
+    <div class="head"></div><div class="line"></div>
+    <div class="lbl">read, on a separate identity, initiated from the lab side</div>
+  </div>
+
+  <div class="zone private">
+    <div class="zone-label"><span>vnet-df-lab</span></div>
+    <div class="nodes">
+      <div class="node">Wazuh manager<span class="addr">the honeypot never learns this exists</span></div>
+    </div>
+  </div>
+
+  <div class="cannot">
+    <div class="cannot-h">What that credential cannot do</div>
+    <ul>
+      <li>Read, list, or delete anything in the container</li>
+      <li>Reach any address in <span class="mono">10.10.0.0/16</span> — no route exists, and an explicit deny rule makes any attempt alertable</li>
+      <li>Authenticate to any resource on the lab side</li>
+      <li>Reveal that a lab, a SIEM, or a second VNet exists at all</li>
+    </ul>
+  </div>
+
+</div>
+      </div>
+    </figure>
+    <figcaption>Granting an attacker complete control of the honeypot, the stolen credential's
+      total value is "can append blobs to one container." Previously captured intelligence
+      survives because the blobs are immutable.</figcaption>
+
+    <h3>Why the alternatives were rejected</h3>
+    <div class="t-scroll">
+      <table>
+        <caption>D-01 — options considered</caption>
+        <thead><tr><th style="width:26%">Option</th><th style="width:12%">Verdict</th><th>Reasoning</th></tr></thead>
+        <tbody>
+          <tr><td>VNet peering + NSG allow</td><td><span class="chip deny">Rejected</span></td><td>Creates exactly the routed path R-02 exists to prevent. One misconfiguration from the scenario the incident-response plan names segmentation as the control against.</td></tr>
+          <tr><td>Storage account airlock</td><td><span class="chip allow">Accepted</span></td><td>No route between VNets. Data moves one way. A compromised honeypot holds only an append-only credential.</td></tr>
+          <tr><td>Wazuh public listener</td><td><span class="chip deny">Rejected</span></td><td>Puts the SIEM — the thing that must survive in order to detect the compromise — on the public internet.</td></tr>
+          <tr><td>Event Hubs broker</td><td><span class="chip deny">Rejected</span></td><td>Same one-way property, more moving parts and more cost for no gain at this scale.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= ADDRESS PLAN ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§4</span><h2>Address plan</h2></div>
+    <p class="sec-sub">Non-overlapping ranges deliberately, <em>even though these VNets are never peered</em>. Overlapping space would foreclose options that cost nothing to preserve — a forensic jump host, a temporary VPN, an offline analysis copy.</p>
+
+    <div class="t-scroll">
+      <table>
+        <caption>vnet-df-lab — 10.10.0.0/16</caption>
+        <thead><tr><th style="width:22%">Subnet</th><th style="width:20%">Range</th><th>Contents and constraint</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">snet-wazuh</td><td class="cidr">10.10.1.0/24</td><td>Wazuh manager. Accepts agent traffic on 1514/1515 from <code>snet-lab</code> only.</td></tr>
+          <tr><td class="mono">snet-lab</td><td class="cidr">10.10.2.0/24</td><td>Metasploit attacker plus deliberately vulnerable targets. <span class="chip deny">Default-deny egress</span></td></tr>
+          <tr><td class="mono">snet-shuffle</td><td class="cidr">10.10.3.0/24</td><td>Shuffle SOAR. Phase 6 — reserved now.</td></tr>
+          <tr><td class="mono">snet-mgmt</td><td class="cidr">10.10.4.0/24</td><td>Reserved for a future jump host. Unused at build.</td></tr>
+          <tr><td class="mono">AzureBastionSubnet</td><td class="cidr">10.10.250.0/26</td><td><span class="chip hold">Reserved, not deployed</span> Developer SKU needs no subnet; reserved so a later upgrade needs no re-addressing.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="t-scroll">
+      <table>
+        <caption>vnet-df-honeypot — 10.20.0.0/16</caption>
+        <thead><tr><th style="width:22%">Subnet</th><th style="width:20%">Range</th><th>Contents and constraint</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">snet-honeypot</td><td class="cidr">10.20.1.0/24</td><td>T-Pot / Cowrie. <span class="chip design">Public IP by design</span> This is the exposed asset.</td></tr>
+          <tr><td class="mono">AzureBastionSubnet</td><td class="cidr">10.20.250.0/26</td><td><span class="chip hold">Reserved, not deployed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Second-octet separation — 10.<strong>10</strong> against 10.<strong>20</strong> — makes the
+      boundary visible in any log line, rule, or alert at a glance. A small operational
+      affordance that pays for itself during an incident.</p>
+  </section>
+
+  <!-- ================= DECISIONS ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§5</span><h2>The four decisions</h2></div>
+    <p class="sec-sub">All accepted 20 August 2026. Reasoning is retained rather than trimmed — a decision record that keeps only the outcome cannot be re-examined when the constraints that produced it change.</p>
+
+    <div class="decisions">
+
+      <article class="dec">
+        <div class="dec-top">
+          <span class="dec-id">D-01</span>
+          <h3>Storage-account airlock</h3>
+          <span class="chip allow">Accepted</span>
+        </div>
+        <p>The honeypot appends to blob storage using a short-lived, auto-rotated SAS scoped to
+          append and create on one container. Wazuh pulls from the lab side on a schedule, under
+          a separate identity. Public network access on the storage account is disabled; the
+          honeypot reaches it over a service endpoint, so log traffic never crosses the public internet.</p>
+        <div class="verdict"><b>Why it holds</b>The lab initiates; the honeypot side never does. Direction of initiation is the control, not the firewall rule.</div>
+      </article>
+
+      <article class="dec">
+        <div class="dec-top">
+          <span class="dec-id">D-02a</span>
+          <h3>Honeypot egress — default deny</h3>
+          <span class="chip allow">Accepted</span>
+        </div>
+        <p>A gap in the Phase 1 documents: the risk register covered the honeypot being attacked
+          and the honeypot pivoting inward, but nothing covered <strong>the honeypot being used to
+          attack someone else</strong>. Azure permits all outbound by default, so not deciding this
+          was deciding it. Now tracked as R-13.</p>
+        <div class="verdict"><b>The tradeoff, stated plainly</b>Blocking egress costs realism — an attacker who runs <code>wget http://evil/malware</code> gets a failure, which can tip them off. Taken anyway: the <em>attempted URL is the intelligence</em>. The capture is the product; the payload is not.</div>
+      </article>
+
+      <article class="dec">
+        <div class="dec-top">
+          <span class="dec-id">D-02b</span>
+          <h3>Lab egress — R-03 becomes technical</h3>
+          <span class="chip allow">Accepted</span>
+        </div>
+        <p>R-03 rates "offensive tooling reaches a real third-party host" at High, and its only
+          control was a signed rules-of-engagement document — an <strong>administrative</strong>
+          control against what is fundamentally an <strong>operator-error</strong> risk. A typo'd
+          CIDR in an <code>msfconsole</code> target range is not prevented by a signature.</p>
+        <div class="verdict"><b>What changes</b>A mistyped target range now fails closed instead of reaching the internet. The control converts from administrative to technical — a material reduction in likelihood.</div>
+      </article>
+
+      <article class="dec">
+        <div class="dec-top">
+          <span class="dec-id">D-03</span>
+          <h3>Bastion Developer SKU</h3>
+          <span class="chip allow">Accepted — free</span>
+        </div>
+        <p>No VM in either VNet gets a public IP for administration, which removes an entire class
+          of exposure rather than restricting it by source IP. Bastion Basic would cost roughly
+          $139/month billed from deployment until deletion; Standard roughly $212.</p>
+        <div class="verdict"><b>The elegant part</b>Developer SKU's headline limitation — "does not support virtual network peering" — is the thing that disqualifies it almost everywhere else. Here R-02 forbids peering anyway, so the limitation costs exactly nothing. Its other limit, one VM connection at a time, is irrelevant to a solo operator.</div>
+      </article>
+
+      <article class="dec">
+        <div class="dec-top">
+          <span class="dec-id">D-04</span>
+          <h3>The honeypot is deliberately not backed up</h3>
+          <span class="chip allow">Accepted</span>
+        </div>
+        <p>A honeypot is a machine you expect to be compromised. A daily snapshot of it is a daily
+          snapshot of an attacker's foothold, and restoring one restores the compromise. Wazuh and
+          Shuffle get daily backup with 7-day retention because they hold genuinely irreplaceable
+          state — detection history, tuned rules, playbooks. The Metasploit lab gets a golden image
+          and no daily backup, because a backup would contradict its own impact-analysis entry.</p>
+        <div class="verdict"><b>Why its RPO reads "continuous"</b>The honeypot's data is protected by D-01's continuous forwarding, not by snapshots — which is precisely why its recovery-point objective is continuous while its recovery-time objective is the most relaxed of any system here.</div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= NSG ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§6</span><h2>NSG baseline</h2></div>
+    <p class="sec-sub">Default-deny in both directions everywhere, with one deliberate exception. Rule names as authored in the Bicep templates.</p>
+
+    <div class="t-scroll">
+      <table>
+        <caption>Rules by network security group</caption>
+        <thead><tr><th style="width:16%">NSG</th><th style="width:34%">Rule</th><th style="width:12%">Action</th><th>Intent</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">nsg-honeypot</td><td class="mono">Allow-Inbound-Honeypot-Services</td><td><span class="chip design">By design</span></td><td>The exposed asset. This inbound traffic <em>is</em> the intended function.</td></tr>
+          <tr><td class="mono">nsg-honeypot</td><td class="mono">Deny-Inbound-Honeypot-AdminUI</td><td><span class="chip deny">Deny</span></td><td>Blocks T-Pot's own admin ports 64294/64295/64297 from the internet. Exposing the decoy does not mean exposing its console.</td></tr>
+          <tr><td class="mono">nsg-honeypot</td><td class="mono">Allow-Outbound-Storage-Airlock</td><td><span class="chip allow">Allow</span></td><td>The single permitted egress path — D-01.</td></tr>
+          <tr><td class="mono">nsg-honeypot</td><td class="mono">Deny-Outbound-To-Lab-VNet-R02</td><td><span class="chip deny">Deny</span></td><td>Belt and braces. No route exists, but the explicit rule makes the intent auditable and any violation alertable.</td></tr>
+          <tr><td class="mono">nsg-honeypot</td><td class="mono">Deny-Outbound-Internet-R13</td><td><span class="chip deny">Deny</span></td><td>Stops a compromised honeypot attacking third parties from a Data-Frames address.</td></tr>
+          <tr><td class="mono">nsg-lab</td><td class="mono">Allow-Outbound-WazuhAgent</td><td><span class="chip allow">Allow</span></td><td>Agent traffic to <code>snet-wazuh</code> only.</td></tr>
+          <tr><td class="mono">nsg-lab</td><td class="mono">Deny-Outbound-Internet-R03</td><td><span class="chip deny">Deny</span></td><td>Offensive tooling must never reach a third party. Updates happen in a deliberate, time-boxed window with the rule temporarily relaxed.</td></tr>
+          <tr><td class="mono">nsg-wazuh</td><td class="mono">Allow-WazuhAgent-From-Lab</td><td><span class="chip allow">Allow</span></td><td>1514/1515 inbound from the lab subnet, nowhere else.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= CONTROL TYPES ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§7</span><h2>Read as control types</h2></div>
+    <p class="sec-sub">The same architecture, classified the way an exam scenario or an auditor would classify it. Every control here has both a type and a category.</p>
+
+    <div class="t-scroll">
+      <table>
+        <caption>Control classification</caption>
+        <thead><tr><th style="width:30%">Control</th><th style="width:20%">Type</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>No peering (R-02), default-deny egress, no public management plane</td><td>Preventive · technical</td><td>Stops the event occurring at all.</td></tr>
+          <tr><td>Honeypot, Wazuh rules</td><td>Detective · technical</td><td>No legitimate user ever touches a honeypot, so any interaction is unauthorised by definition — the lowest false-positive signal available.</td></tr>
+          <tr><td>Shuffle blocking a source address</td><td>Corrective</td><td>Acts after detection, not before the event.</td></tr>
+          <tr><td>Golden-image rebuild, Azure Backup</td><td>Recovery</td><td>Restores operation after damage.</td></tr>
+          <tr><td>Information Security Policy, rules of engagement</td><td>Directive · administrative</td><td>Mandates behaviour. D-02b exists precisely because a directive control was carrying a technical risk.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>One deliberate omission worth noting: the honeypot is the single asset here that gets
+      <strong>no deterrent control</strong>. Warning banners are standard practice everywhere else —
+      on a decoy, deterring the attacker defeats the entire purpose.</p>
+  </section>
+
+  <!-- ================= STATUS ================= -->
+  <section>
+    <div class="sec-head"><span class="sec-num">§8</span><h2>Status</h2></div>
+    <div class="status">
+      <h3>Nothing is deployed</h3>
+      <p>The Bicep templates in <code>infra/bicep/</code> are written and reviewable but have never
+        been compiled or deployed, and no Azure resources exist. Nothing in this document bills
+        while it remains a document — which is the entire reason it was written before provisioning.
+        First expected failure at deployment: the <code>AzurePlatformDNS</code> and
+        <code>AzurePlatformIMDS</code> service-tag allow rules.</p>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Data-Frames · Phase 2 · Network Architecture v1.0</span>
+    <span>Traceability — R-02 · R-03 · R-07 · R-08 · R-13</span>
+  </footer>
+
+</div>

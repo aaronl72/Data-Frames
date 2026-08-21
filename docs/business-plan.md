@@ -56,7 +56,7 @@ Prior work (a draft website, two governance docs) only ever existed as artifacts
 | # | Phase | CISSP Domain | Status |
 |---|---|---|---|
 | 1 | Governance | Domain 1 — Security & Risk Management | Markdown deliverables complete 2026-08-19 (Info Security Policy, Risk Register, BCP/DRP) — branded `.docx` exports still pending |
-| 2 | Network architecture | Domain 3 — Security Architecture & Engineering (+ Domain 4 — Communication & Network Security) | Design drafted 2026-08-20 ([infra/network-architecture.md](../infra/network-architecture.md)) — v1.0, all 4 decisions accepted 2026-08-20; Bicep for VNets/subnets/NSGs written ([infra/bicep/](../infra/bicep/)), not yet deployed |
+| 2 | Network architecture | Domain 3 — Security Architecture & Engineering (+ Domain 4 — Communication & Network Security) | Design complete ([infra/network-architecture.md](../infra/network-architecture.md)) — **v1.1**, five decisions accepted; D-05 added 2026-08-20 and D-01 amended. Bicep written for VNets/subnets/NSGs **plus the storage airlock and a custom append-only role** ([infra/bicep/](../infra/bicep/)). **Nothing deployed — templates have never been compiled or run.** |
 | 3 | IAM | Domain 5 — Identity & Access Management | Not started |
 | 4 | Wazuh + website | Domain 7 — Security Operations (partly) | Website done (redesigned + branded 2026-08-19); Wazuh not started |
 | 5 | Metasploit lab | Domain 6 — Security Assessment & Testing | Not started (decision made: Framework over Pro) |
@@ -65,6 +65,20 @@ Prior work (a draft website, two governance docs) only ever existed as artifacts
 | 8 | Ongoing operations | Domain 7 / Domain 8 — Security Operations, Software Development Security | Not started |
 
 Domain 8 (Software Development Security) has the thinnest coverage in this sequence — worth deliberate attention since no phase maps to it directly.
+
+### Schedule constraint — CISSP boot camp, 2026-09-07 to early November
+
+An 8-week CISSP boot camp starts **7 September 2026** ($500 CAD, on top of the $1,500 exam fee). It will consume the time the build would otherwise take, so **Phases 3 to 7 are deferred to November.**
+
+One exception, decided 2026-08-21: **the honeypot is deployed before the boot camp starts, not after.** It is the only component that produces value unattended — it collects into the airlock whether or not anyone is watching, at roughly $20/month. Deploying it in the ~17 days before 7 September means emerging from the boot camp in November with **around ten weeks of real attack data already captured**, instead of starting a 30-day collection clock from zero. Total cost of doing so is about $50, against $2,000 already committed to the certification.
+
+It also pairs with the study rather than competing with it: Domain 7 (Security Operations) covers honeypots, detection and incident response, and having a live one running during that module is applied practice rather than a distraction.
+
+**This requires a heartbeat.** An Azure Monitor alert on *"no new blob written to the capture container in 24 hours"* — monitoring the outcome rather than the VM, since that single signal catches a stopped VM, a crashed Cowrie, a broken managed identity, a misconfigured NSG, or a full disk. Without it, an unattended honeypot that dies in week two is not discovered until November.
+
+The airlock read path is **not** configured during this period. Wazuh does not exist yet, so `labEgressIpAddress` is left empty — writes from the honeypot subnet only, no IP rule to go stale while unattended.
+
+**Deliberately not done during the boot camp:** further refinement of the planning documents. Planning is materially complete; the gap is that nothing runs. Short, bounded items only — the contact form fix, the SPF verification, and the governance `.docx` exports.
 
 ## CISSP tie-in
 

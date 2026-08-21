@@ -1,0 +1,419 @@
+<title>The First Thirty Days</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ink:#16211c; --ink-soft:#3d4a44; --ink-faint:#6b7873;
+    --paper:#f7f8f7; --panel:#ffffff; --plate:#eef1ef;
+    --plate-bar:#e2e7e4; --plate-rule:#cfd6d2;
+    --rule:#d8ded9; --rule-soft:#e7ebe8;
+    --teal:#0f6b5c; --teal-soft:#e2efec;
+    --allow:#2e764d; --allow-bg:#e4f0e8;
+    --deny:#8f3a2e;  --deny-bg:#f6e6e3;
+    --design:#8f600c; --design-bg:#f7ecd8;
+    --code-bg:#eceff0; --code-rule:#d3d9da;
+    --shadow:0 1px 2px rgba(22,33,28,.06), 0 8px 24px rgba(22,33,28,.05);
+    --f-display:'Archivo','Helvetica Neue',Arial,sans-serif;
+    --f-body:'IBM Plex Sans',-apple-system,'Segoe UI',Roboto,sans-serif;
+    --f-mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+    --measure:68ch; --wide:1180px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink:#e6ece9; --ink-soft:#a9b6b0; --ink-faint:#7d8b85;
+      --paper:#0e1512; --panel:#141d19; --plate:#101815;
+      --plate-bar:#182420; --plate-rule:#26332d;
+      --rule:#26332d; --rule-soft:#1d2823;
+      --teal:#3fc9b0; --teal-soft:#12302a;
+      --allow:#6bc38f; --allow-bg:#16301f;
+      --deny:#e08a78;  --deny-bg:#331914;
+      --design:#d9a441; --design-bg:#302410;
+      --code-bg:#0a100e; --code-rule:#26332d;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink:#e6ece9; --ink-soft:#a9b6b0; --ink-faint:#7d8b85;
+    --paper:#0e1512; --panel:#141d19; --plate:#101815;
+    --plate-bar:#182420; --plate-rule:#26332d;
+    --rule:#26332d; --rule-soft:#1d2823;
+    --teal:#3fc9b0; --teal-soft:#12302a;
+    --allow:#6bc38f; --allow-bg:#16301f;
+    --deny:#e08a78;  --deny-bg:#331914;
+    --design:#d9a441; --design-bg:#302410;
+    --code-bg:#0a100e; --code-rule:#26332d;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.28);
+  }
+
+  * { box-sizing:border-box; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--f-body);
+    font-size:16px; line-height:1.62; margin:0; padding:0 24px 96px; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:var(--wide); margin:0 auto; }
+
+  header.mast { padding:72px 0 40px; border-bottom:2px solid var(--ink); margin-bottom:44px; }
+  .eyebrow { font-family:var(--f-mono); font-size:.75rem; font-weight:500; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--teal); margin:0 0 20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .eyebrow .tick { color:var(--ink-faint); }
+  h1 { font-family:var(--f-display); font-weight:700; font-size:clamp(2.4rem,6vw,3.9rem);
+    line-height:1.02; letter-spacing:-.025em; text-wrap:balance; margin:0 0 20px; max-width:14ch; }
+  .standfirst { font-size:1.14rem; line-height:1.55; color:var(--ink-soft); max-width:60ch; margin:0 0 32px; }
+  .meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .meta div { background:var(--paper); padding:14px 16px; }
+  .meta dt { font-family:var(--f-mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 5px; }
+  .meta dd { margin:0; font-size:.9rem; font-weight:500; line-height:1.35; }
+
+  section { margin:0 0 60px; }
+  .sec-head { display:flex; align-items:baseline; gap:14px; margin:0 0 8px; padding-bottom:10px; border-bottom:1px solid var(--rule); }
+  .sec-num { font-family:var(--f-mono); font-size:.78rem; font-weight:600; color:var(--teal); letter-spacing:.06em; flex:none; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.42rem; letter-spacing:-.012em; margin:0; text-wrap:balance; }
+  .sec-sub { font-size:.92rem; color:var(--ink-faint); margin:0 0 24px; max-width:var(--measure); }
+  h3 { font-family:var(--f-display); font-weight:600; font-size:1.02rem; margin:26px 0 8px; }
+  p { margin:0 0 15px; max-width:var(--measure); }
+  code { font-family:var(--f-mono); font-size:.855em; background:var(--teal-soft); color:var(--teal); padding:.12em .38em; border-radius:2px; }
+
+  pre { font-family:var(--f-mono); font-size:.8rem; line-height:1.65; background:var(--code-bg);
+    border:1px solid var(--code-rule); border-radius:3px; padding:13px 15px; overflow-x:auto;
+    margin:12px 0 16px; color:var(--ink); max-width:var(--measure); }
+  pre .c { color:var(--ink-faint); }
+  pre code { background:none; color:inherit; padding:0; font-size:1em; }
+
+  ul.tight { margin:0 0 15px; padding-left:20px; max-width:var(--measure); }
+  ul.tight li { margin-bottom:6px; }
+
+  /* ---- Steps ---- */
+  .seq { display:grid; }
+  .step { display:grid; grid-template-columns:auto 1fr; gap:0 18px; }
+  .step-mark { display:flex; flex-direction:column; align-items:center; }
+  .step-n { width:60px; min-height:30px; padding:5px 4px; border-radius:3px; flex:none;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--f-mono); font-size:.68rem; font-weight:600; letter-spacing:.05em;
+    border:1.5px solid var(--teal); color:var(--teal); background:var(--panel); }
+  .step.paid .step-n { border-color:var(--design); color:var(--design); }
+  .step.gate .step-n { border-color:var(--deny); color:var(--deny); }
+  .step-rail { width:1.5px; flex:1; background:var(--rule); min-height:14px; }
+  .step:last-child .step-rail { background:transparent; }
+  .step-body { padding:0 0 26px; }
+  .step-body h3 { margin:0 0 6px; }
+  .step-body p { font-size:.93rem; margin-bottom:12px; }
+
+  .t-scroll { overflow-x:auto; margin:16px 0 8px; }
+  table { border-collapse:collapse; width:100%; min-width:540px; font-size:.89rem; }
+  caption { text-align:left; font-family:var(--f-mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); padding-bottom:9px; }
+  th { text-align:left; font-family:var(--f-mono); font-weight:600; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--rule); padding:0 14px 8px 0; vertical-align:bottom; }
+  td { border-bottom:1px solid var(--rule-soft); padding:11px 14px 11px 0; vertical-align:top; color:var(--ink-soft); }
+  td:first-child { color:var(--ink); font-weight:500; }
+  tbody tr:last-child td { border-bottom:none; }
+  .num { text-align:right; font-family:var(--f-mono); font-variant-numeric:tabular-nums; }
+  .mono, td.mono { font-family:var(--f-mono); font-size:.86em; }
+  tr.total td { border-top:1.5px solid var(--rule); border-bottom:none; color:var(--ink); font-weight:600; padding-top:12px; }
+
+  .chip { display:inline-block; font-family:var(--f-mono); font-size:.66rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:2px; white-space:nowrap; }
+  .chip.allow{background:var(--allow-bg);color:var(--allow);}
+  .chip.deny{background:var(--deny-bg);color:var(--deny);}
+  .chip.design{background:var(--design-bg);color:var(--design);}
+  .chip.hold{background:var(--teal-soft);color:var(--teal);}
+
+  .risk { border:1px solid var(--rule); border-left:3px solid var(--deny); border-radius:3px;
+    background:var(--panel); padding:17px 20px; box-shadow:var(--shadow); }
+  .risks { display:grid; gap:14px; }
+  .risk h3 { margin:0 0 6px; font-size:1rem; }
+  .risk p { font-size:.9rem; color:var(--ink-soft); margin:0 0 8px; max-width:none; }
+  .risk p:last-child { margin-bottom:0; }
+  .risk .fix { font-family:var(--f-mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--allow); font-weight:600; }
+
+  .gate { border:1px solid var(--design); background:var(--design-bg); border-radius:3px; padding:20px 24px; max-width:var(--measure); }
+  .gate h3 { margin:0 0 8px; color:var(--design); font-size:1.02rem; }
+  .gate p { color:var(--ink-soft); margin:0 0 10px; font-size:.93rem; }
+  .gate p:last-child { margin-bottom:0; }
+
+  footer.foot { margin-top:60px; padding-top:22px; border-top:1px solid var(--rule); font-family:var(--f-mono);
+    font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint);
+    display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between; }
+  a { color:var(--teal); }
+  a:focus-visible { outline:2px solid var(--teal); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important;} }
+  @media (max-width:640px){ body{padding:0 18px 64px;} header.mast{padding:44px 0 30px;} .step{gap:0 12px;} .step-n{width:52px;} }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow"><span>Data-Frames</span><span class="tick">/</span><span>Build plan</span><span class="tick">/</span><span>Honeypot first</span></p>
+    <h1>The First Thirty Days</h1>
+    <p class="standfirst">
+      Put the honeypot in Azure immediately, because its value accrues in wall-clock time and
+      cannot be bought back later. Learn Wazuh and Shuffle locally on Hyper-V, where breaking
+      things is free and instant. Lift them into Azure when there are meetings to run.
+    </p>
+    <dl class="meta">
+      <div><dt>Azure spend</dt><dd>~$20/month · honeypot only</dd></div>
+      <div><dt>Local spend</dt><dd>$0 · hardware you own</dd></div>
+      <div><dt>Region</dt><dd>Canada Central</dd></div>
+      <div><dt>Lift trigger</dt><dd>Prospect meetings booked — not a date</dd></div>
+    </dl>
+  </header>
+
+  <!-- ===== BEFORE ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">00</span><h2>Before you sign up</h2></div>
+    <p class="sec-sub">The 30-day clock starts at <strong>signup</strong>, not at first use. Everything here costs nothing and needs no account — do it first so day one isn't spent on setup.</p>
+
+    <h3>Confirm the tooling works</h3>
+    <pre><span class="c"># Azure CLI — this returned nothing when I checked, so verify it</span>
+az version
+
+<span class="c"># If missing:</span>
+winget install -e --id Microsoft.AzureCLI</pre>
+
+    <h3>Decide the tenant question</h3>
+    <p>Your position is a separate tenant per domain, on blast-radius-per-credential grounds.
+      Relevant fact: <code>data-frames.com</code> is <strong>already</strong> a verified custom domain
+      in an existing Microsoft 365 tenant — the <code>MS=ms37433444</code> DNS record proves it.
+      <code>network-packets.com</code> is not verified anywhere, so it's free to claim.</p>
+    <p>Signing up with a fresh email creates a new tenant with a default
+      <code>something.onmicrosoft.com</code> name. You then add <code>network-packets.com</code> to
+      it as a custom domain. Decide which email before you start — changing it later means starting over.</p>
+
+    <h3>Confirm Hyper-V is available</h3>
+    <p>Windows 11 Pro includes it, but it may not be turned on. Run as administrator, then reboot:</p>
+    <pre>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All</pre>
+    <p>Note that Hyper-V and VirtualBox historically fight over the hypervisor. If VirtualBox is
+      installed and you need both, check that before committing to either.</p>
+
+    <h3>Have the repo ready</h3>
+    <p>The Bicep templates in <code>infra/bicep/</code> deploy the network layer. They have never been
+      compiled or run, so budget time on day one for fixing them rather than assuming they work.</p>
+
+    <div class="boundary-note" style="border:1px solid var(--rule); border-left:3px solid var(--teal); border-radius:3px; padding:16px 19px; margin-top:22px; max-width:var(--measure);">
+      <h3 style="margin:0 0 7px; font-size:.98rem;">The trial credit, and why it doesn't change the plan</h3>
+      <p style="font-size:.9rem; margin:0 0 10px; max-width:none;">A free account issues <strong>$200
+        USD of credit valid for 30 days</strong>. This plan spends roughly $20 of it and the rest
+        expires. That is not a loss — it was never money you had.</p>
+      <p style="font-size:.9rem; margin:0; max-width:none;">The tempting argument is to spend the
+        credit standing the full stack up in Azure so the templates get validated. It doesn't hold:
+        <strong>the Bicep creates only virtual networks, subnets and NSGs, and none of those bill.</strong>
+        Deploying the entire thing — including the lab VNet you won't populate for months — costs
+        nothing at any time. You get complete template validation without the credit, without VMs,
+        and without a migration at day 30.</p>
+    </div>
+  </section>
+
+  <!-- ===== THE PLAN ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>The thirty days</h2></div>
+    <p class="sec-sub">Honeypot first — it's the only component whose value accrues in wall-clock time and cannot be compressed later.</p>
+
+    <div class="seq">
+
+      <div class="step">
+        <div class="step-mark"><div class="step-n">DAY 1</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Account, budget alert, and the whole network layer</h3>
+          <p>Create the account and set a budget alert <em>before</em> deploying anything — Cost
+            Management → Budgets, $50 with alerts at 50% and 90%. Two minutes, and it is the
+            difference between a surprise and a warning.</p>
+          <pre>az login
+az account show --output table
+
+az provider register --namespace Microsoft.Network
+az provider register --namespace Microsoft.Compute
+az provider register --namespace Microsoft.Storage
+
+<span class="c"># Dry run first — expect errors, that is the point</span>
+az deployment sub what-if \
+  --location canadacentral \
+  --template-file infra/bicep/main.bicep \
+  --parameters env=dev
+
+<span class="c"># Then deploy the whole thing</span>
+az deployment sub create \
+  --location canadacentral \
+  --template-file infra/bicep/main.bicep \
+  --parameters env=dev</pre>
+          <p><strong>Deploy both modules, including the lab VNet you will not populate for months.</strong>
+            Virtual networks, subnets and NSGs do not bill, so the entire template validates for
+            nothing — and the lab network sits there correct and waiting for the day you lift into it.</p>
+          <p>Quota is a non-issue on this plan: Cowrie needs one vCPU, comfortably inside any trial cap.</p>
+        </div>
+      </div>
+
+      <div class="step paid">
+        <div class="step-mark"><div class="step-n">DAY 2–3</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Honeypot up — the clock starts</h3>
+          <p>Deploy Cowrie into <code>snet-honeypot</code>, not full T-Pot. Cowrie is the SSH and
+            Telnet honeypot that produces the brute-force data your entire demo narrative rests on,
+            it runs in 2 GB, and Wazuh already provides the dashboards T-Pot would have brought.</p>
+          <p>Configure the append-only SAS against the storage account, point
+            <code>network-packets.com</code> at the public IP, then check the logs within the hour.
+            A fresh public address is typically scanned within minutes — if nothing is arriving, the
+            NSG is wrong. Treat silence as a misconfiguration, not as quiet.</p>
+          <p><strong>This is the only irreversible timing decision on the page.</strong> Every day it
+            is not running is a day of data you cannot retroactively buy.</p>
+          <div class="step-cost" style="font-family:var(--f-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;color:var(--design);">~$20/month begins here</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-mark"><div class="step-n">WEEK 1</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Wazuh on Hyper-V — and the noise problem</h3>
+          <p>All-in-one deployment locally, 12 GB while it is the only thing running. Take a
+            checkpoint <em>before</em> the first configuration change, and another after every
+            working state. This is the entire reason Wazuh is local: you will break it repeatedly,
+            and a right-click revert takes thirty seconds.</p>
+          <p>Expect it to be extremely noisy out of the box. This is the real work of the month —
+            decoders, rule syntax, and deciding what actually deserves an alert. Showing a prospect
+            40,000 alerts is worse than showing them twelve real ones.</p>
+          <p><strong>Export every tuned rule to the repo as you go.</strong> The VM never migrates —
+            the configuration does. Treat <code>ossec.conf</code>, custom rules and decoders as
+            version-controlled from the first edit, and the eventual lift becomes a copy rather than a redo.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-mark"><div class="step-n">WEEK 2</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Kali and targets — attacks you control</h3>
+          <p>Kali plus a deliberately vulnerable target on the same host-only switch, with Wazuh
+            agents on the targets. Now you can generate an attack on demand rather than waiting for
+            the internet to supply one, which is what makes rule development iterative instead of
+            observational.</p>
+          <p>The host-only switch has no route to the internet at all — a harder guarantee for R-03
+            than the NSG rule would have been. Nothing in this lab can reach a third party even by mistake.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-mark"><div class="step-n">WEEK 3</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Connect the airlock, then build a playbook</h3>
+          <p>Give the Wazuh VM a <strong>second NIC</strong> — one host-only facing the lab, one
+            external restricted to Azure Storage. Every other VM stays host-only. Then point Wazuh at
+            the blob container and pull. Two or three weeks of real attack data arrives at once.</p>
+          <p>Then Shuffle, locally, wired to Wazuh. Build one crude playbook end to end rather than a
+            perfect one on paper: alert fires, enrich the source against AbuseIPDB, record it, notify
+            you. <strong>Do not let this slip to week four.</strong> The temptation is to keep tuning
+            Wazuh forever — but detection is a commodity and automated response is the differentiator.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-mark"><div class="step-n">WEEK 4</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>Tune against real traffic, and write it down</h3>
+          <p>The honeypot now has a month behind it. Tune against genuine attack data rather than
+            synthetic tests, get the dashboards to a state you would willingly show someone, and
+            capture what the playbook does when it fires.</p>
+          <p>Record what broke — the Bicep fixes, the NSG rules that were wrong, the Wazuh rules you
+            had to author. That record is the beginning of a client-deliverable methodology, and it is
+            worth more than the lab itself.</p>
+        </div>
+      </div>
+
+      <div class="step gate">
+        <div class="step-mark"><div class="step-n">TRIGGER</div><div class="step-rail"></div></div>
+        <div class="step-body">
+          <h3>When to lift into Azure</h3>
+          <div class="gate">
+            <h3>Booked meetings, not a date on the calendar</h3>
+            <p>The gap in this plan is narrow and specific: Shuffle only responds while the laptop is
+              on, so you cannot show automated response with honest timestamps for an attack that
+              happened overnight. Detection is unaffected and no data is ever lost — the airlock
+              accumulates and Wazuh backfills.</p>
+            <p>That gap costs nothing until someone is watching. When prospect conversations are
+              actually booked, lift Wazuh and Shuffle into the lab VNet that has been sitting
+              deployed and empty since day one — roughly <strong>$150/month</strong>, from tuned
+              configs already in the repo.</p>
+            <p>By then the honeypot data is months deep, so the demo is populated from the moment it
+              goes up.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== COST ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>What it actually costs</h2></div>
+    <p class="sec-sub">Monthly USD at pay-as-you-go rates. During the trial this is drawn against credit rather than billed.</p>
+    <div class="t-scroll">
+      <table>
+        <caption>Ongoing spend under this plan</caption>
+        <thead><tr><th style="width:32%">Resource</th><th style="width:20%">Size</th><th style="width:14%" class="num">Monthly</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Cowrie honeypot</td><td class="mono">B1ms · 2 GB</td><td class="num">$15</td><td>Runs continuously — this is the data clock</td></tr>
+          <tr><td>Static public IP</td><td class="mono">Standard</td><td class="num">$4</td><td>Required — SSH and Telnet cannot be multiplexed by hostname</td></tr>
+          <tr><td>Storage airlock</td><td class="mono">Blob · LRS</td><td class="num">$2</td><td>Immutable, versioned</td></tr>
+          <tr><td>VNets, subnets, NSGs</td><td class="mono">both VNets</td><td class="num">$0</td><td><strong>Free</strong> — deploy the whole template, populate later</td></tr>
+          <tr><td>Bastion</td><td class="mono">Developer</td><td class="num">$0</td><td>Free SKU</td></tr>
+          <tr><td>Wazuh, Shuffle, Kali, targets</td><td class="mono">Hyper-V</td><td class="num">$0</td><td>Hardware already owned</td></tr>
+          <tr><td>data-frames.com</td><td class="mono">GitHub Pages</td><td class="num">$0</td><td></td></tr>
+          <tr class="total"><td>Total</td><td></td><td class="num">~$21</td><td>Plus ~$20/yr per domain at GoDaddy</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Roughly <strong>$21/month</strong>, and the first month is covered by trial credit with $180
+      left unused. That unused portion is not a loss — it was never money you had, and spending it
+      on VMs you would then migrate away from at day 30 buys duplicated work rather than value.</p>
+    <p>When the lift happens, this rises to about <strong>$150/month</strong> — Wazuh at ~$60,
+      Shuffle at ~$30, the lab VMs at ~$15 under auto-shutdown, plus disks.</p>
+  </section>
+
+  <!-- ===== RISKS ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>What will probably go wrong</h2></div>
+    <p class="sec-sub">Named in advance so they read as expected rather than as failure.</p>
+
+    <div class="risks">
+      <div class="risk">
+        <h3>Hyper-V and VirtualBox fight over the hypervisor</h3>
+        <p>If VirtualBox is installed, enabling Hyper-V can break it, and the failure is confusing —
+          VMs simply refuse to start. Coexistence works on current versions but is not guaranteed.</p>
+        <p class="fix">Fix — check before enabling, not after</p>
+      </div>
+      <div class="risk">
+        <h3>The second NIC on Wazuh is a hole you have to keep narrow</h3>
+        <p>Wazuh needs outbound internet to pull the airlock, which breaks the otherwise complete
+          host-only isolation. Configured loosely, it becomes general internet access for a VM sitting
+          on the same switch as your vulnerable targets.</p>
+        <p class="fix">Fix — restrict it to Azure Storage, and keep every other VM host-only</p>
+      </div>
+      <div class="risk">
+        <h3>The Bicep doesn't deploy first time</h3>
+        <p>These templates have never been compiled or run. The most likely first failure is the
+          <code>AzurePlatformDNS</code> and <code>AzurePlatformIMDS</code> service-tag rules — but
+          that's a prediction, not a finding.</p>
+        <p class="fix">Fix — <code>what-if</code> before <code>create</code>, always</p>
+      </div>
+      <div class="risk">
+        <h3>Wazuh's indexer won't start</h3>
+        <p>The single most common all-in-one failure, and it's almost always memory. The indexer is a
+          JVM and 4 GB is not enough regardless of what the minimum spec says.</p>
+        <p class="fix">Fix — B2ms with 8 GB, not B2s with 4</p>
+      </div>
+      <div class="risk">
+        <h3>Nothing attacks the honeypot</h3>
+        <p>If an hour passes with no inbound activity, the NSG is wrong or the public IP isn't
+          associated. The internet is reliable about this — a fresh address gets scanned within
+          minutes.</p>
+        <p class="fix">Fix — treat silence as a misconfiguration, not as quiet</p>
+      </div>
+      <div class="risk">
+        <h3>You spend the whole month on Wazuh</h3>
+        <p>Tuning is genuinely absorbing and there's always another rule. Week 3 arrives and Shuffle
+          hasn't been touched — so the month produces a detection demo without the differentiator.</p>
+        <p class="fix">Fix — one working playbook by end of week 3, however crude</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Data-Frames · Build plan · Azure free trial, 30 days</span>
+    <span>Honeypot first · Decision at day 30</span>
+  </footer>
+
+</div>
